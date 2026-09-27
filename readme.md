@@ -1,3 +1,7 @@
+以下はXAIPrunerのREADMEである．実行方法などを確認することを目的とし，しばらくはそのまま残すこととする
+
+-----
+
 ### **XAI-Pruner: Explainability-Driven Pruning of CNN and Transformer**
 
 ------
