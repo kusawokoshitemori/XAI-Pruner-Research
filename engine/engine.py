@@ -12,6 +12,8 @@ from timm.utils import accuracy, ModelEma
 import engine.utils as utils
 import random
 
+import diag
+
 
 
 def train_one_epoch(model: torch.nn.Module,
@@ -146,8 +148,14 @@ def compute_scores(model_lrp,
     header = 'Computing Layer-wise Relevance'
 
     scores = None
+    diag.set_phase("compute_scores")
+    if diag.enabled():
+        training_modules = [n for n, m in model_without_ddp.named_modules() if m.training]
+        diag.emit("lrp_model_mode", training_module_count=len(training_modules), examples=training_modules[:5],
+                  note="Filter の入力を次の Linear の分母とみなす対応は eval（Dropout/DropPath が恒等）が前提")
 
-    for samples, targets in metric_logger.log_every(data_loader, print_freq, header):
+    for batch_id, (samples, targets) in enumerate(metric_logger.log_every(data_loader, print_freq, header)):
+        diag.begin_batch(batch_id)
         samples = samples.to(device, non_blocking=True)
         targets = targets.to(device, non_blocking=True)
 
@@ -160,6 +168,7 @@ def compute_scores(model_lrp,
         relevance = torch.where(mask, relevance, torch.tensor(0))
 
         loss_value = loss.item()
+        diag.scores.initial_relevance(batch_id, samples, outputs, targets, relevance, momentum)
 
 
         outputs.backward(relevance)
@@ -167,10 +176,12 @@ def compute_scores(model_lrp,
         optimizer.zero_grad()
 
         scores = update_scores(model_without_ddp, scores, momentum)
+        diag.end_batch()
 
         metric_logger.update(loss=loss_value)
         metric_logger.update(lr=optimizer.param_groups[0]["lr"])
 
+    diag.scores.finalize(scores, momentum)
     return scores
 
 def prune_one_shot(
@@ -199,11 +210,19 @@ def prune_one_shot(
     pruner = create_crntroller(model=model, scores=scores, pruning_rate=pruning_rate,
                  population=population, epsilon=epsilon,protect=protect_rate, epochs=generation)
 
+    diag.set_phase("evolution")
     pruner.engine(mutation_num=int(pruner.population/2), crossover_num=int(pruner.population /2))
 
     masks = pruner.get_mask()
 
-    pruned_model = get_pruned_model(model, masks, save_dir, num_classes)
+    diag.set_phase("build_pruned_model")
+    kind = "vit" if isinstance(model, VisionTransformer) else type(model).__name__.lower()
+    try:
+        pruned_model = get_pruned_model(model, masks, save_dir, num_classes)
+    except Exception as e:
+        diag.ea.model_built(model, None, kind, pruner, error=e)
+        raise
+    diag.ea.model_built(model, pruned_model, kind, pruner)
 
     return pruned_model
 

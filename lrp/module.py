@@ -4,6 +4,8 @@ from timm.models.layers import DropPath
 import inspect
 
 import lrp.rules as rules
+import diag
+from diag import relevance as diag_relevance
 import torch.fx
 from timm.models.resnet import BasicBlock, Bottleneck
 from typing import Optional, Type
@@ -24,6 +26,8 @@ class BatchNorm2dLRP(nn.BatchNorm2d):
         super(BatchNorm2dLRP, self).__init__(*args, **kwargs)
 
     def forward(self, x):
+        if diag.lrp_active():
+            diag_relevance.batchnorm_config(getattr(self, "diag_tag", {}).get("module", "unannotated"), self, x)
         return rules.identity_lrp.apply(super().forward, x)
 
 
@@ -34,7 +38,7 @@ class EpsilonLinearLRP(nn.Linear):
         self.relevance = None
 
     def forward(self, x):
-        return rules.epsilon_linear_lrp.apply(x, self.weight, self.bias, self.epsilon)
+        return rules.epsilon_linear_lrp.apply(x, self.weight, self.bias, self.epsilon, getattr(self, "diag_tag", None))
 
 
 class GELULRP(nn.GELU):
@@ -155,12 +159,12 @@ class BlockLRP(nn.Module):
         attn = self.drop_path1(self.attn(self.norm1(self.filter_attn_out(x))))
 
         attn = self.filter_attn_in(attn)
-        x = rules.add_tensors_lrp.apply(x, attn)
+        x = rules.add_tensors_lrp.apply(x, attn, False, 1e-6, getattr(self, "diag_tag_attn", None))
 
         mlp = self.drop_path2(self.mlp(self.norm2(self.filter_mlp_out(x))))
 
         mlp = self.filter_mlp_in(mlp)
-        x = rules.add_tensors_lrp.apply(x, mlp)
+        x = rules.add_tensors_lrp.apply(x, mlp, False, 1e-6, getattr(self, "diag_tag_mlp", None))
         return x
 
 
@@ -270,7 +274,7 @@ class Filter(nn.Module):
         self.top_k = top_k_percent
 
     def forward(self, x):
-        return rules.filter_lrp.apply(x, self.top_k)
+        return rules.filter_lrp.apply(x, self.top_k, getattr(self, "diag_tag", None))
 
 
 class ReLULRP(nn.ReLU):
@@ -288,7 +292,8 @@ class Conv2dLRP(nn.Conv2d):
         self.filter = Filter(top_k_percent=0.5)
 
     def forward(self, x):
-        outputs = rules.epsilon_conv2d_lrp.apply(x, self.weight, self.bias, self.stride, self.padding, self.dilation)
+        outputs = rules.epsilon_conv2d_lrp.apply(x, self.weight, self.bias, self.stride, self.padding, self.dilation,
+                                                 1e-9, getattr(self, "diag_tag", None))
         outputs.register_hook(self.save_relevance())
         outputs = self.filter(outputs)
 
@@ -380,7 +385,7 @@ class BasicBlockLRP(BasicBlock):
 
         if self.downsample is not None:
             residual = self.downsample(residual)
-        x = rules.add_tensors_lrp.apply(x, residual)
+        x = rules.add_tensors_lrp.apply(x, residual, False, 1e-6, getattr(self, "diag_tag_add", None))
         x = self.act2(x)
         return x
 
@@ -462,7 +467,7 @@ class BottleneckLRP(Bottleneck):
 
         if self.downsample is not None:
             shortcut = self.downsample(shortcut)
-        x = rules.add_tensors_lrp.apply(x, shortcut)
+        x = rules.add_tensors_lrp.apply(x, shortcut, False, 1e-6, getattr(self, "diag_tag_add", None))
         x = self.act3(x)
 
         return x

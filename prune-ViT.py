@@ -25,6 +25,8 @@ from timm.models import create_model
 
 from lrp.module import InitViTLRP
 from pruner import save_state
+import diag
+import diag.relevance
 
 
 def get_args_parser():
@@ -180,6 +182,7 @@ def get_args_parser():
     parser.add_argument('--no-amp', action='store_false', dest='amp')
     parser.set_defaults(amp=True)
 
+    diag.add_args(parser)
     return parser
 
 
@@ -233,6 +236,9 @@ def main(args):
     print(model_lrp)
     model_lrp.to(device)
 
+    if diag.init(args, rank=utils.get_rank(), script="prune-ViT.py"):
+        diag.relevance.annotate(model_lrp)
+
     model_without_ddp = model_lrp
     if args.distributed:
         model_lrp = torch.nn.parallel.DistributedDataParallel(model_lrp, device_ids=[args.gpu], find_unused_parameters=True)
@@ -278,7 +284,9 @@ def main(args):
     for checkpoint_path in checkpoint_paths:
         utils.save_on_master({'model': pruned_model.state_dict()}, checkpoint_path)
 
-    evaluate(data_loader_val, pruned_model, device)
+    stats = evaluate(data_loader_val, pruned_model, device)
+    diag.emit("final_evaluation_after_pruning_before_finetune", **stats)
+    diag.close()
 
 
 if __name__ == '__main__':

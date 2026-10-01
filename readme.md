@@ -1,142 +1,31 @@
 以下はXAIPrunerのREADMEである．実行方法などを確認することを目的とし，しばらくはそのまま残すこととする
 
------
+---
 
-### **XAI-Pruner: Explainability-Driven Pruning of CNN and Transformer**
+## 診断ログ（`--diag_dir`）
 
-------
+`lrp/`, `pruner/`, `engine/`, `prune-ViT.py`, `prune-CNN.py` に、挙動を変えずに内部状態を観測するための診断ログ機能（`diag/`）を追加した。
+**`--diag_dir` を指定しない限り（既定）、計算経路・乱数の消費順序・最終的な出力（スコア・マスク・枝刈り後の重み）は元のコードと完全に同じになるよう実装している。** 無効時の各ログ呼び出しは最初の分岐（`if STATE.enabled` 相当）で即座に戻るだけで、テンソルの書き換えや乱数の消費は行わない。有効時も、ログは `detach()` したコピーだけを読んで記録するだけで、関連度・スコア・候補・マスクといった手法側の値を一切書き換えない（方針は `diag/core.py` 冒頭のコメント、検証結果は `diag/README.md` を参照）。
 
-**XAI-Pruner** is an advanced pruning framework that leverages Explainable AI (XAI) techniques to achieve model compression while preserving high performance.  It employs the Layer-wise Relevance Propagation (LRP) to assess the contributions of individual network components, guiding a structured pruning process. 
+### ログが出るタイミング
 
-To enhance the accuracy and stability of relevance allocation when applying LRP to deep networks with residual connections, XAI-Pruner introduces two novel mechanisms::
+| タイミング | 内容 | 既定の頻度 |
+|---|---|---|
+| 関連度計算（`compute_scores`）の各バッチ | 初期関連度・BatchNorm設定・LRP内部（残差加算・Linear・Filter・Conv）の詳細 | LRP内部の詳細ログのみ先頭 `--diag_lrp_batches`（既定2）バッチに限定。それ以外は全バッチ |
+| 全バッチ終了後 | momentum集計 vs 単純平均の比較 | 1回 |
+| 進化計算開始前（`protect()` 前後） | 保護前後のスコア統計、構造種類別スコア | 1回 |
+| 進化計算の各世代 | ランダム補充・交叉・突然変異の試行ログ、選択結果 | 全世代 |
+| 枝刈り確定後 | 候補→マスク→実モデルの整合性、実際のパラメータ/FLOPs削減率 | 1回 |
+| ファインチューニング前の評価後（`prune-ViT.py` のみ） | 評価指標 | 1回 |
 
-- **Relevance Gating**: Ensures that only the relevance from the residual path is propagated to the next block, effectively mitigating bias in relevance allocation
-- **Relevance Filtering**: Enforces sparsity in relevance propagation, mitigating numerical instability and enhancing robustness
+コード上の起点は `prune-ViT.py` / `prune-CNN.py` の `main()` 内の `diag.init(args, ...)`（`--diag_dir` が空なら何もせず `False` を返す）、バッチ単位の区切りは `engine/engine.py` の `compute_scores()` 内の `diag.begin_batch()` / `diag.end_batch()`、世代単位の区切りは `pruner/pruner.py` の `Controller_vit.engine()` / `Controller_resnet.engine()` 内。
 
-Furthermore, XAI-Pruner incorporates **Global Structure-Aware Pruning**, which optimizes pruning rates of different network components based on the unified relevance scale of relevance.
+### ログの読み方
 
-Experimental validation on DeiT and ResNet demonstrates that XAI-Pruner achieves substantial model compression while maintaining performance comparable to the original models, highlighting its effectiveness as an explainability-driven pruning approach.
+生ログ（`<diag_dir>/<run_id>/rank<r>/events.jsonl` と各種 `.csv`）は、フィールド名自体に意味・単位を埋め込み（例: `near_zero_threshold`, `functional_abs_share_q_y_abs`）、解釈を誤りやすい指標には `note_*` 系のフィールドで注記を添えている。それでも値だけを並べた表は読みにくいため、次の集計ツールで人が読める形にまとめてから確認することを推奨する。
 
-![Cover](assets/Cover.svg)
-
-
-
-#### Environment Setup
-
-------
-
-To set up the environment you can easily run the following command:
-
-```shell
-conda create -n XAIPruner python=3.10
-conda activate XAIPruner
-pip install -r requirements.txt
+```bash
+python tools/summarize_diag.py <diag_dir>/<run_id>/rank0
 ```
 
-#### Data Preparation
-
-------
-
-You need to first download the [ImageNet-2012](http://www.image-net.org/) to the folder `./data/imagenet` and move the validation set to the subfolder `./data/imagenet/val`. The directory structure is the standard layout as following.
-
-```
-/path/to/imagenet/
-  train/
-    class1/
-      img1.jpeg
-    class2/
-      img2.jpeg
-  val/
-    class1/
-      img3.jpeg
-    class/2
-      img4.jpeg
-```
-
-We construct a compact dataset to compute the relevance of individual model components.  To generate the subImageNet in `/PATH/TO/IMAGENET`, you could simply run:
-
-```shell
-python ./lib/subImageNet.py --data-path /PATH/TO/IMAGENT
-```
-
-#### Quick Start
-
-------
-
-**Prune the Pre-trained Model**
-
-For example, to prune **DeiT-B**, you can execute the following command. By default, the output path is set to `./`, but you can specify a different path using the `--output` argument. The `--resume` option specifies the path to the pre-trained model weights. Upon completion, it will generate a `state.yaml`  file a  `checkpoint_pruned.pth`  in the specified output directory.
-
-```shell
-python prune-ViT.py --data-path /PATH/TO/IMAGENT --model "deit_base_patch16_224" --resume "/PATH/TO/CHECKPOINT"  --output_dir "/OUTPUT_PATH" --batch-size 128  --prung_rate 0.5 
-```
-
-**Fine-tune the Pruned Model**
-
-To fine-tune the pruned model, you can easily run the following command.  The `--cfg` argument specifies the configuration file (`.yaml`) of the pruned model structure, while the `--resume` argument loads the checkpoint of the pruned model (`checkpoint_pruned.pth`).
-
-```shell
-python -m torch.distributed.launch --nproc_per_node=8 --use_env fintune.py --model "deit_base_patch16_224" --data-path "/PATH/TO/IMAGENT" --cfg "/PATH/TO/.yaml" --resume "/PATH/TO/PRUNED/CHECKPOINT" --output_dir OUTPUT_PATH --epochs 300 --batch_size 128 --warmup_epochs 0 --cooldown_epochs 0 
-```
-
-**Evaluate our Pruned Model**
-
-We provided our pruned models in `./checkpoints`. You can easily evaluate their performance using the following command. **Due to file size limitations, we only upload the checkpoint of the pruned DeiT-Base with a pruning rate of 0.5.**
-
-```shell
-python -m torch.distributed.launch --nproc_per_node=8 --use_env fintune.py --model "deit_base_patch16_224" --data-path "/PATH/TO/IMAGENT" --cfg "/PATH/TO/.yaml" --resume "/PATH/TO/PRUNED/CHECKPOINT" --eval
-```
-
-
-
-#### Performance
-
-------
-
-##### **Results on DeiT**
-
-|     Model      |  Param   | $\downarrow\%$ | GFLOPs  | $\downarrow\%$ |    Acc    | $\Delta$  |      Compression Method      |
-| :------------: | :------: | :------------: | :-----: | -------------- | :-------: | :-------: | :--------------------------: |
-|   DeiT-Base    |   86.6   |       -        |  17.6   | -              |   81.84   |     -     |              -               |
-|   DynamicViT   |   86.6   |      0.0       |  11.5   | 34.7           |   81.30   |   -0.54   |        Token Pruning         |
-|   T2T-ViT-24   |   64.1   |      26.0      |  13.8   | 21.6           |   82.30   |   +0.46   |  Hand-crafted model Design   |
-| S$^{2}$ViTE-B  |   56.8   |      34.4      |  11.8   | 33.1           |   82.22   |   +0.38   | Sparse Training (Structural) |
-|  AutoFormer-B  |   54.0   |      37.6      |  11.0   | 37.5           |   82.40   |   +0.56   |             NAS              |
-|    ViT-Slim    |   52.6   |      39.3      |  10.6   | 39.8           |   82.40   |   +0.56   |             NAS              |
-|     VTP-B      |   47.3   |      45.4      |  10.0   | 43.2           |   80.70   |  -1.147   |      Structural Pruning      |
-|     SAViT      |   42.6   |      50.8      |   8.8   | 50.0           |   82.54   |   +0.70   |      Structural Pruning      |
-|    X-Pruner    |    -     |       -        |   8.5   | 51.7           |   81.02   |   -0.82   |      Structural Pruning      |
-|      UVC       |    -     |       -        |   8.0   | 54.5           |   80.57   |   -1.27   |      Structural Pruning      |
-| **XAI-Pruner** | **42.2** |    **51.3**    | **8.8** | **50.0**       | **82.57** | **+0.73** |    **Structural Pruning**    |
-| **XAI-Pruner** | **25.0** |    **71.1**    | **5.3** | **69.9**       | **81.50** | **-0.34** |    **Structural Pruning**    |
-
-|     Model      |  Param   | $\downarrow\%$ | GFLOPs  | $\downarrow\%$ |    Acc    | $\Delta$  |      Compression Method      |
-| :------------: | :------: | :------------: | :-----: | :------------: | :-------: | :-------: | :--------------------------: |
-|   DeiT-Small   |   22.1   |       -        |   4.6   |       -        |   79.85   |     -     |              -               |
-|   DynamicViT   |   22.1   |      0.0       |   3.4   |      26.1      |   78.60   |   -1.25   |        Token Pruning         |
-|    ViT-Slim    |   15.7   |      29.0      |   3.1   |      32.6      |   79.9    |   +0.05   |             NAS              |
-| S$^{2}$ViTE-S  |   14.6   |      34.0      |   3.1   |      32.6      |   79.22   |   -0.63   | Sparse Training (Structural) |
-|     SAViT      |   14.7   |      33.5      |   3.1   |      32.6      |   80.11   |   +0.26   |      Structural Pruning      |
-| **XAI-Pruner** | **14.7** |    **33.5**    | **3.1** |    **32.6**    | **80.33** | **+0.48** |    **Structural Pruning**    |
-| **XAI-Pruner** | **10.8** |    **51.1**    | **2.3** |    **50.0**    | **77.98** | **-1.87** |    **Structural Pruning**    |
-
-|     Model      |  Param  | $\downarrow\%$ | GFLOPs  | $\downarrow\%$ |    Acc    | $\Delta$  |      Compression Method      |
-| :------------: | :-----: | :------------: | :-----: | :------------: | :-------: | :-------: | :--------------------------: |
-|   DeiT-Tiny    |   5.7   |       -        |   1.3   |       -        |   72.20   |     -     |              -               |
-| S$^{2}$ViTE-T  |   4.2   |      26.3      |   1.0   |      23.7      |   70.12   |   -2.08   | Sparse Training (Structural) |
-|     SAViT      |   4.2   |      26.3      |   0.9   |      24.4      |   70.72   |   -1.48   |      Structural Pruning      |
-| **XAI-Pruner** | **4.2** |    **26.3**    | **0.9** |    **24.4**    | **70.99** | **-1.21** |    **Structural Pruning**    |
-
-**Results on ResNet-50**
-
-|     Model      | Base-Top1 | Pruned-Params | Pruned-GFLOPs | Pruned-Top1 | Params $\downarrow$ | GFLOPS $\downarrow$ |
-| :------------: | :-------: | :-----------: | :-----------: | :---------: | :-----------------: | :-----------------: |
-|     HRank      |   76.15   |     16.19     |     2.30      |    74.98    |        36.67        |        43.77        |
-|     Taylor     |   76.18   |     14.20     |     2.25      |    74.50    |        44.44        |        45.12        |
-|      CCP       |   76.15   |       -       |     2.11      |    75.50    |          -          |        48.54        |
-|      RRCP      |     -     |     13.83     |     2.00      |    75.13    |        45.88        |        51.22        |
-|    DepGraph    |   76.15   |       -       |     1.99      |    75.83    |          -          |        51.46        |
-|       CC       |   76.15   |     13.20     |     1.92      |    75.59    |        48.36        |        52.93        |
-|     ResRep     |   76.15   |     16.56     |     1.86      |    76.15    |        35.21        |        54.54        |
-| **XAI-Pruner** | **76.15** |   **13.21**   |   **1.87**    |  **76.10**  |      **48.32**      |      **54.39**      |
-
+`summary.md` が生成され、ログ追加の動機になった疑問一覧（G1〜I1）に対応する表としてまとまる。出力ファイル・イベントの一覧やIDの定義など詳細は `diag/README.md` を参照。

@@ -2,7 +2,11 @@ import torch
 import numpy as np
 import random
 import timm
+import copy
+import time
 from torch.ao.nn.quantized.functional import threshold
+
+import diag
 
 from model import VisionTransformer
 from lrp.module import ViTLRP, Conv2dLRP, BasicBlockLRP, BottleneckLRP, EpsilonLinearLRP
@@ -19,16 +23,18 @@ def get_scores(model):
 
 def update_scores(model, scores, momentum: float):
     if isinstance(model, ViTLRP):
-        return update_scores_vit(model, scores, momentum)
+        scores = update_scores_vit(model, scores, momentum)
 
     elif isinstance(model, timm.models.ResNet):
-        return update_scores_resnet(model, scores, momentum)
+        scores = update_scores_resnet(model, scores, momentum)
 
     elif isinstance(model, timm.models.VGG):
-        return update_scores_vgg(model, scores, momentum)
+        scores = update_scores_vgg(model, scores, momentum)
 
     else:
         raise TypeError(f"Unsupported model type: {type(model)}")
+
+    return scores
 
 def create_crntroller(model, scores, pruning_rate, population=50, epsilon=0.02, protect=0.0,epochs=50):
     if isinstance(model, VisionTransformer):
@@ -52,6 +58,7 @@ def get_scores_vit(model:ViTLRP):
     scores["head"] = np.asarray(scores["head"])
     scores["hidden"] = np.asarray(scores["hidden"])
 
+    diag.scores.vit_relevance(relevance)
     model.clear_relevance()
     return scores
 
@@ -110,17 +117,20 @@ def get_scores_vgg(model:timm.models.VGG):
 def update_scores_vit(model:ViTLRP, scores, momentum:float):
     if scores is None:
         scores = get_scores(model)
+        diag.scores.batch_scores(diag.STATE.batch_id, scores, scores, momentum)
     else:
         new_scores = get_scores(model)
         scores["dim"] = scores["dim"] * momentum + new_scores["dim"]
         scores["head"] = scores["head"] * momentum + new_scores["head"]
         scores["hidden"] = scores["hidden"] * momentum + new_scores["hidden"]
+        diag.scores.batch_scores(diag.STATE.batch_id, new_scores, scores, momentum)
 
     return scores
 
 def update_scores_resnet(model:timm.models.ResNet, scores, momentum:float):
     if scores is None:
         scores = get_scores(model)
+        diag.scores.batch_scores(diag.STATE.batch_id, scores, scores, momentum)
     else:
         new_scores = get_scores(model)
 
@@ -130,6 +140,7 @@ def update_scores_resnet(model:timm.models.ResNet, scores, momentum:float):
             name = "block" + str(i)
             for j in range(len(scores[name])):
                 scores[name][j] = np.asarray(scores[name][j]) * momentum + np.asarray(new_scores[name][j])
+        diag.scores.batch_scores(diag.STATE.batch_id, new_scores, scores, momentum)
 
     return scores
 
@@ -213,6 +224,10 @@ class Controller_vit(object):
     def get_random_candidates(self):
         dim_rate, head_rate = np.random.uniform(low=self.percentage, high=1, size=2)
         hidden_rate = 0
+        # 診断用の計数のみ（計算には使わない）
+        diag_info = {"initial_rates": [float(dim_rate), 0.0, float(head_rate)], "scaling_iterations": 0,
+                     "binary_search_iterations": 0, "termination_reason": "no_scaling_needed(hidden_rate=0)",
+                     "last_mid_step": None}
 
         current_flops = self.model.get_complexity(dim_rate, hidden_rate, head_rate)
         pruned_percentage = 1 - (current_flops / self.original_flops)
@@ -220,6 +235,7 @@ class Controller_vit(object):
         while pruned_percentage > self.percentage + self.epsilon:
             head_rate = head_rate * 0.8
             dim_rate = dim_rate * 0.8
+            diag_info["scaling_iterations"] += 1
 
             current_flops = self.model.get_complexity(dim_rate=dim_rate, hidden_rate=hidden_rate, head_rate=head_rate)
             pruned_percentage = 1 - (current_flops / self.original_flops)
@@ -228,22 +244,35 @@ class Controller_vit(object):
                 start = 0
                 end = 1
                 mid = 0.5
+                diag_info["termination_reason"] = "binary_search_exhausted(start>end, hidden_rate=0)"
 
                 while start <= end:
                     current_flops = self.model.get_complexity(dim_rate=dim_rate, hidden_rate=mid, head_rate=head_rate)
                     pruned_percentage = 1 - (current_flops / self.original_flops)
+                    diag_info["binary_search_iterations"] += 1
+                    if diag_info["binary_search_iterations"] == 100000 and diag.enabled():
+                        # 観測用 watchdog: 停止も代替もせず、長い探索に入ったことだけ記録する
+                        diag.emit("random_generator_long_loop", start=start, end=end, mid=mid,
+                                  dim_rate=dim_rate, head_rate=head_rate, pruned_percentage=pruned_percentage)
+                        diag.STATE.events.flush()
 
                     if pruned_percentage < self.percentage - self.epsilon and start <= mid:
                         start = mid
+                        prev_mid = mid
                         mid = (start + end) / 2
+                        diag_info["last_mid_step"] = mid - prev_mid
                     elif pruned_percentage > self.percentage + self.epsilon:
                         end = mid
+                        prev_mid = mid
                         mid = (start + end) / 2
+                        diag_info["last_mid_step"] = mid - prev_mid
                     else:
                         hidden_rate = mid
+                        diag_info["termination_reason"] = "binary_search_found"
                         break
                 break
         cand = [dim_rate, hidden_rate, head_rate]
+        self.diag_last_random = diag_info
         return cand
 
 
@@ -251,34 +280,55 @@ class Controller_vit(object):
         kids = set()
         iters = 0
 
+        diag.ea.begin_operator()
+        t0 = time.perf_counter()
         while len(kids) < crossover_num and iters < max_iters:
             parent1, parent2 = random.sample(self.candidates, 2)
 
             mask = np.random.randint(0, 2, size=len(parent1))
             child = np.where(mask == 0, parent1, parent2)
 
-            if self.is_legal(child):
+            n_before = len(kids)
+            legal = self.is_legal(child)
+            if legal:
                 kids.add(tuple(child))
+            diag.ea.attempt("crossover", iters, crossover_num, max_iters, [parent1, parent2], child,
+                            child, legal, False, len(kids) > n_before, crossover_mask=mask)
             iters += 1
 
+        diag.ea.operator_end("crossover", kids, iters, crossover_num, max_iters, time.perf_counter() - t0)
         return kids
 
 
     def mutation(self, mutation_num, max_iters=100, prob=0.5):
         kids = set()
         iters = 0
+        diag.ea.begin_operator()
+        t0 = time.perf_counter()
         while len(kids) < mutation_num and iters < max_iters:
-            cand = np.array(random.sample(self.candidates, 1)[0])
+            parent = random.sample(self.candidates, 1)[0]
+            cand = np.array(parent)
+            decisions, deltas = [], []
 
             for i in range(len(cand)):
                 random_s = np.random.random()
+                decisions.append(random_s < prob)
                 if random_s < prob:
-                    cand[i] = cand[i] + np.random.uniform(-0.1, 0.1)
+                    delta = np.random.uniform(-0.1, 0.1)
+                    deltas.append(float(delta))
+                    cand[i] = cand[i] + delta
+                else:
+                    deltas.append(0.0)
 
-            if self.is_legal(cand):
+            n_before = len(kids)
+            legal = self.is_legal(cand)
+            if legal:
                 kids.add(tuple(cand))
+            diag.ea.attempt("mutation", iters, mutation_num, max_iters, [parent], cand, cand, legal, False,
+                            len(kids) > n_before, decisions=decisions, deltas=deltas)
             iters += 1
 
+        diag.ea.operator_end("mutation", kids, iters, mutation_num, max_iters, time.perf_counter() - t0)
         return kids
 
 
@@ -290,6 +340,7 @@ class Controller_vit(object):
         sorted_idx = np.argsort(fitness)[:top_k]
         selected_candidates = [candidates[index] for index in sorted_idx ]
         self.best = selected_candidates[0]
+        diag.ea.select(candidates, fitness, sorted_idx, top_k)
 
         self.candidates = set(selected_candidates)
 
@@ -335,13 +386,25 @@ class Controller_vit(object):
         return self.masks
 
     def engine(self, max_iters=100, crossover_num=25, mutation_num=25, prob=0.25, top_k=50):
+        scores_before = diag.scores.copy_scores(self.scores) if diag.enabled() else None
         self.scores = self.protect()
+        if diag.enabled():
+            diag.scores.protect_report("vit", self, scores_before, self.scores)
+            diag.scores.vit_component_table(self, self.model, scores_before)
+            diag.ea.start(self, "vit")
         epoch = 0
         while epoch < self.epochs:
+            previous = set(self.candidates) if diag.enabled() else None
+            random_attempts = 0
             # Init self.candidates
             while len(self.candidates) < self.population:
                 cand = self.get_random_candidates()
+                n_before = len(self.candidates)
                 self.candidates.add(tuple(cand))
+                random_attempts += 1
+                diag.ea.random_candidate(cand, len(self.candidates) > n_before, getattr(self, "diag_last_random", None))
+            parent_pool = set(self.candidates) if diag.enabled() else None
+            diag.ea.begin_generation(epoch, previous, parent_pool, random_attempts)
 
             corssover_kids = self.crossover(crossover_num, max_iters)
             mutation_kids = self.mutation(mutation_num, max_iters, prob)
@@ -349,10 +412,12 @@ class Controller_vit(object):
             self.candidates = self.candidates | corssover_kids | mutation_kids
 
             self.select(top_k=top_k)
+            diag.ea.generation(epoch, previous, parent_pool, corssover_kids, mutation_kids, self.candidates, top_k)
 
             epoch += 1
 
         self.generate_masks()
+        diag.ea.final_vit(self)
 
     def protect(self):
         protect_head_per_layer = np.ceil(self.protect_percent * self.num_heads_per_layer).astype(int)
@@ -472,41 +537,69 @@ class Controller_resnet(object):
         kids = set()
         iters = 0
 
+        diag.ea.begin_operator()
+        t0 = time.perf_counter()
         while len(kids) < crossover_num and iters < max_iters:
             parent1, parent2 = random.sample(self.candidates, 2)
 
             mask = np.random.randint(0, 2, size=len(parent1))
             child = np.where(mask == 0, parent1, parent2)
+            # revise() は child を in-place で書き換えるので、診断用に修正前を複製しておく
+            raw_child = child.copy() if diag.enabled() else None
 
-            if self.is_legal(child):
+            n_before = len(kids)
+            legal = self.is_legal(child)
+            if legal:
                 kids.add(tuple(child))
             else:
                 child = self.revise(child)
                 if child is not None:
                     kids.add(tuple(child))
+            if diag.enabled():
+                diag.ea.attempt("crossover", iters, crossover_num, max_iters, [parent1, parent2], raw_child,
+                                child, legal, (not legal) and child is not None, len(kids) > n_before,
+                                crossover_mask=mask)
             iters += 1
 
+        diag.ea.operator_end("crossover", kids, iters, crossover_num, max_iters, time.perf_counter() - t0)
         return kids
 
     def mutation(self, mutation_num, max_iters=100, prob=0.5):
         kids = set()
         iters = 0
+        diag.ea.begin_operator()
+        t0 = time.perf_counter()
         while len(kids) < mutation_num and iters < max_iters:
-            cand = np.array(random.sample(self.candidates, 1)[0])
+            parent = random.sample(self.candidates, 1)[0]
+            cand = np.array(parent)
+            decisions, deltas = [], []
 
             for i in range(len(cand)):
                 random_s = np.random.random()
+                decisions.append(random_s < prob)
                 if random_s < prob:
-                    cand[i] = cand[i] + np.random.uniform(-0.1, 0.1)
+                    delta = np.random.uniform(-0.1, 0.1)
+                    deltas.append(float(delta))
+                    cand[i] = cand[i] + delta
+                else:
+                    deltas.append(0.0)
+            raw_cand = cand.copy() if diag.enabled() else None
 
-            if self.is_legal(cand):
+            n_before = len(kids)
+            legal = self.is_legal(cand)
+            if legal:
                 kids.add(tuple(cand))
             else:
                 cand = self.revise(cand)
                 if cand is not None:
                     kids.add(tuple(cand))
+            if diag.enabled():
+                diag.ea.attempt("mutation", iters, mutation_num, max_iters, [parent], raw_cand, cand, legal,
+                                (not legal) and cand is not None, len(kids) > n_before,
+                                decisions=decisions, deltas=deltas)
             iters += 1
 
+        diag.ea.operator_end("mutation", kids, iters, mutation_num, max_iters, time.perf_counter() - t0)
         return kids
 
     def select(self, top_k=50):
@@ -517,6 +610,7 @@ class Controller_resnet(object):
         sorted_idx = np.argsort(fitness)[:top_k]
         selected_candidates = [candidates[index] for index in sorted_idx ]
         self.best = selected_candidates[0]
+        diag.ea.select(candidates, fitness, sorted_idx, top_k)
 
         self.candidates = set(selected_candidates)
         return
@@ -565,12 +659,23 @@ class Controller_resnet(object):
 
     def engine(self, max_iters=100, crossover_num=25, mutation_num=25, prob=0.25, top_k=50):
         epoch = 0
+        scores_before = diag.scores.copy_scores(self.scores) if diag.enabled() else None
         self.protect()
+        if diag.enabled():
+            diag.scores.protect_report("resnet", self, scores_before, self.scores)
+            diag.ea.start(self, "resnet")
         while epoch < self.epochs:
+            previous = set(self.candidates) if diag.enabled() else None
+            random_attempts = 0
             # Init self.candidates
             while len(self.candidates) < self.population:
                 cand = self.get_random_candidates()
+                n_before = len(self.candidates)
                 self.candidates.add(tuple(cand))
+                random_attempts += 1
+                diag.ea.random_candidate(cand, len(self.candidates) > n_before)
+            parent_pool = set(self.candidates) if diag.enabled() else None
+            diag.ea.begin_generation(epoch, previous, parent_pool, random_attempts)
 
             corssover_kids = self.crossover(crossover_num, max_iters)
             mutation_kids = self.mutation(mutation_num, max_iters, prob)
@@ -578,12 +683,14 @@ class Controller_resnet(object):
             self.candidates = self.candidates | corssover_kids | mutation_kids
 
             self.select(top_k=top_k)
+            diag.ea.generation(epoch, previous, parent_pool, corssover_kids, mutation_kids, self.candidates, top_k)
 
             print(self.best)
 
             epoch += 1
 
         self.generate_masks()
+        diag.ea.final_resnet(self, getattr(self, "diag_masks_before_alignment", None))
 
 
     def protect(self):
@@ -619,6 +726,9 @@ class Controller_resnet(object):
             reshaped_masks = [m.reshape(s) for m, s in zip(split_masks, original_shapes)]
 
             self.masks.append(reshaped_masks)
+
+        if diag.enabled():
+            self.diag_masks_before_alignment = copy.deepcopy(self.masks)
 
         if len(self.masks) == 17:
             groups = [3, 4, 6, 3]

@@ -22,6 +22,8 @@ from fvcore.nn import FlopCountAnalysis
 from lrp.module import *
 from lrp.core import Replacer
 from pruner import save_state
+import diag
+import diag.relevance
 
 
 def get_args_parser():
@@ -177,6 +179,7 @@ def get_args_parser():
     parser.add_argument('--no-amp', action='store_false', dest='amp')
     parser.set_defaults(amp=True)
 
+    diag.add_args(parser)
     return parser
 
 
@@ -260,6 +263,9 @@ def main(args):
     model.to(device)
     print(model)
 
+    if diag.init(args, rank=utils.get_rank(), script="prune-CNN.py"):
+        diag.relevance.annotate(model)
+
     model_without_ddp = model
     if args.distributed:
         model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu], find_unused_parameters=True)
@@ -306,6 +312,8 @@ def main(args):
 
     total_params = sum(p.numel() for p in pruned_model.parameters())
     print(f"Total parameters: {total_params / 1e6} million")
+    diag.emit("pruned_model_fvcore", flops=flops.total(), parameters=total_params)
+    diag.close()
 
 
     checkpoint_paths = [output_dir / 'checkpoint_pruned.pth']

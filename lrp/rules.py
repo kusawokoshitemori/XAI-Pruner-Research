@@ -4,6 +4,9 @@ from torch.autograd import Function
 import torch.nn.functional as F
 import math
 
+import diag
+from diag import relevance as diag_relevance
+
 
 def _stabilize(input, epsilon=1e-6, inplace=False):
     """
@@ -20,10 +23,11 @@ class epsilon_linear_lrp(Function):
     # Distribute the relevance value of the bias uniformly
     """
     @staticmethod
-    def forward(ctx, inputs, weight, bias=None, epsilon=1e-6):
+    def forward(ctx, inputs, weight, bias=None, epsilon=1e-6, tag=None):
         outputs = F.linear(inputs, weight, bias)
         ctx.save_for_backward(inputs, weight, bias, outputs)
         ctx.epsilon = epsilon
+        ctx.diag_tag = tag
 
         return outputs
 
@@ -31,15 +35,20 @@ class epsilon_linear_lrp(Function):
     def backward(ctx, *out_relevance):
         inputs, weight, bias, outputs = ctx.saved_tensors
         epsilon = ctx.epsilon
+        raw_outputs = outputs
 
         outputs = _stabilize(outputs, epsilon)
+        stabilized = outputs
         outputs = torch.where(outputs > 0, torch.clamp(outputs, min=ctx.epsilon), torch.clamp(outputs, max=-ctx.epsilon))
 
         relevance_norm = out_relevance[0] / outputs
 
         relevance = torch.matmul(relevance_norm, weight).mul_(inputs)
+        data_raw = relevance
 
         relevance = torch.nan_to_num(relevance, nan=0.0, posinf=1e9, neginf=-1e9)
+        data_used = relevance
+        bias_relevance = combined_raw = None
 
 
         if bias is not None:
@@ -48,10 +57,15 @@ class epsilon_linear_lrp(Function):
 
             bias_relevance = bias_relevance.expand_as(bias_relevance)
             relevance = relevance + bias_relevance
+            combined_raw = relevance
             relevance = torch.nan_to_num(relevance, nan=0.0, posinf=1e9, neginf=-1e9)
 
+        if diag.lrp_active():
+            diag_relevance.linear(ctx.diag_tag, inputs, raw_outputs, stabilized, outputs, out_relevance[0],
+                                  data_raw, data_used, bias_relevance, combined_raw,
+                                  relevance if bias is not None else None)
 
-        return relevance, None, None, None
+        return relevance, None, None, None, None
 
 
 class identity_lrp(Function):
@@ -118,11 +132,12 @@ class add_tensors_lrp(Function):
     Target to residual connection
     """
     @staticmethod
-    def forward(ctx, input_a, input_b, inplace=False, epsilon=1e-6):
+    def forward(ctx, input_a, input_b, inplace=False, epsilon=1e-6, tag=None):
         outputs = input_a + input_b
 
         ctx.save_for_backward(input_a, input_b, outputs)
         ctx.epsilon, ctx.inplace = epsilon, inplace
+        ctx.diag_tag = tag
 
         return outputs
 
@@ -130,15 +145,23 @@ class add_tensors_lrp(Function):
     def backward(ctx, *out_relevance):
         input_a, input_b, outputs = ctx.saved_tensors
 
-        relevance_norm = out_relevance[0] / _stabilize(outputs, epsilon=ctx.epsilon, inplace=ctx.inplace)
+        diag_on = diag.lrp_active()
+        raw_outputs = outputs.detach().clone() if (diag_on and ctx.inplace) else outputs
+        denominator = _stabilize(outputs, epsilon=ctx.epsilon, inplace=ctx.inplace)
+        relevance_norm = out_relevance[0] / denominator
 
         relevance_a = relevance_norm * input_a
         relevance_b = relevance_norm * input_b
+        relevance_a_raw, relevance_b_raw = relevance_a, relevance_b
 
         relevance_a = torch.nan_to_num(relevance_a, nan=0.0, posinf=1e12, neginf=-1e12)
         relevance_b = torch.nan_to_num(relevance_b, nan=0.0, posinf=1e12, neginf=-1e12)
 
-        return relevance_a, relevance_b, None, None
+        if diag_on:
+            diag_relevance.residual_add(ctx.diag_tag, input_a, input_b, raw_outputs, out_relevance[0], denominator,
+                                        relevance_a_raw, relevance_b_raw, relevance_a, relevance_b)
+
+        return relevance_a, relevance_b, None, None, None
 
 
 class layer_norm_lrp(Function):
@@ -170,8 +193,11 @@ class layer_norm_lrp(Function):
 
 class filter_lrp(Function):
     @staticmethod
-    def forward(ctx, input, top_k_percent):
+    def forward(ctx, input, top_k_percent, tag=None):
         ctx.top_k_percent = top_k_percent
+        ctx.diag_tag = tag
+        # 診断用: Filter の forward 入力（= 次に関連度を戻す演算の分母）への参照。計算には使わない
+        ctx.diag_input = input.detach() if diag.lrp_active() else None
         return input
 
     @staticmethod
@@ -197,14 +223,21 @@ class filter_lrp(Function):
 
                 relevance = torch.where(mask, relevance, torch.tensor(0.0, device=relevance.device))
                 relevance = relevance.view(size)
+                masked = relevance
 
                 selected_sum = torch.sum(torch.abs(relevance), dim=(2, 3), keepdim=True)  # [B, C, 1, 1]
                 scale = original_sum / _stabilize(selected_sum)
 
                 relevance = relevance * scale # Normalize per channel
+                rescaled_raw = relevance
                 relevance = torch.nan_to_num(relevance, nan=0.0, posinf=1e12, neginf=-1e12)
 
-                return relevance, None
+                if diag.lrp_active():
+                    diag_relevance.filter_cnn(ctx.diag_tag, top_k_percent, out_relevance, mask, masked,
+                                              original_sum, selected_sum, scale, rescaled_raw, relevance,
+                                              ctx.diag_input)
+
+                return relevance, None, None
 
             # Transformer : [B, N, C]
             elif len(size) == 3:
@@ -218,24 +251,35 @@ class filter_lrp(Function):
                 relevance.scatter_(dim=1, index=top_k.indices, src=out_relevance.view(size[0], -1).gather(dim=1, index=top_k.indices))
 
                 selected_sum = torch.sum(relevance, dim=1, keepdim=True)
+                masked = relevance
                 relevance = relevance * (original_sum / selected_sum)
 
-                return relevance.view(size), None
+                if diag.lrp_active():
+                    diag_relevance.filter_transformer(ctx.diag_tag, top_k_percent, out_relevance, top_k.indices,
+                                                      masked.view(size), original_sum, selected_sum,
+                                                      relevance.view(size), ctx.diag_input)
+
+                return relevance.view(size), None, None
 
         elif top_k_percent == 0.0:
             relevance = torch.zeros_like(out_relevance)
-            return relevance, None
+            if diag.lrp_active():
+                diag_relevance.gate(ctx.diag_tag, top_k_percent, out_relevance, relevance)
+            return relevance, None, None
 
         else:
-            return out_relevance, None
+            if diag.lrp_active():
+                diag_relevance.passthrough_filter(ctx.diag_tag, top_k_percent, out_relevance)
+            return out_relevance, None, None
 
 
 class epsilon_conv2d_lrp(Function):
     @staticmethod
-    def forward(ctx, inputs, weight, bias, stride, padding, dilation, epsilon=1e-9):
+    def forward(ctx, inputs, weight, bias, stride, padding, dilation, epsilon=1e-9, tag=None):
         outputs = F.conv2d(inputs, weight, bias, stride, padding, dilation)
         ctx.save_for_backward(inputs, weight, bias, outputs)
         ctx.epsilon = epsilon
+        ctx.diag_tag = tag
         ctx.stride = stride
         ctx.padding = padding
         ctx.dilation = dilation
@@ -248,6 +292,7 @@ class epsilon_conv2d_lrp(Function):
         padding = ctx.padding
         dilation = ctx.dilation
         out_relevance = out_relevance[0]
+        out_relevance_raw = out_relevance
 
         z = _stabilize(outputs, epsilon=ctx.epsilon)
         z = torch.where(z > 0, torch.clamp(z, min=ctx.epsilon), torch.clamp(z, max=-ctx.epsilon) )
@@ -273,9 +318,13 @@ class epsilon_conv2d_lrp(Function):
             z_grad = F.pad(z_grad, (0, pad_w, 0, pad_h))
 
         relevance = z_grad * inputs
+        relevance_raw = relevance
         relevance = torch.nan_to_num(relevance, nan=0.0, posinf=1e12, neginf=-1e12)
 
-        return relevance, None, None, None, None, None, None
+        if diag.lrp_active():
+            diag_relevance.conv2d(ctx.diag_tag, inputs, outputs, z, out_relevance_raw, relevance_raw, relevance)
+
+        return relevance, None, None, None, None, None, None, None
 
 
 class avgpool2d_lrp(Function):
