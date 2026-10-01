@@ -7,7 +7,7 @@
 python prune-ViT.py \
   --model deit_base_patch16_224 \
   --resume ./checkpoint/deit_base_patch16_224.pth \
-  --data_path ./data/imagenet \
+  --data_path ./data_dl/imagenet \
   --output_dir ./output/base \
   --batch-size 32 \
   --pruning_rate 0.5 \
@@ -23,7 +23,7 @@ python prune-ViT.py \
 python prune-ViT.py \
   --model deit_small_patch16_224 \
   --resume ./checkpoint/deit_small_patch16_224.pth \
-  --data_path ./data/imagenet \
+  --data_path ./data_dl/imagenet \
   --output_dir ./output/small \
   --batch-size 32 \
   --pruning_rate 0.5 \
@@ -39,7 +39,7 @@ python prune-ViT.py \
 python prune-ViT.py \
   --model deit_tiny_patch16_224 \
   --resume ./checkpoint/deit_tiny_patch16_224.pth \
-  --data_path ./data/imagenet \
+  --data_path ./data_dl/imagenet \
   --output_dir ./output/tiny \
   --batch-size 32 \
   --pruning_rate 0.5 \
