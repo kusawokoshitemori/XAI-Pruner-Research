@@ -28,6 +28,7 @@ from engine.engine import train_one_epoch, evaluate, prune_one_shot
 import gc
 from torch.utils.data import DataLoader, Subset
 import torch.nn.functional as F
+import diag
 
 
 def get_args_parser():
@@ -188,6 +189,8 @@ def get_args_parser():
     parser.add_argument('--no-amp', action='store_false', dest='amp')
     parser.set_defaults(amp=True)
 
+    diag.add_args(parser)
+
     return parser
 
 
@@ -199,6 +202,8 @@ def read_cfg_from_file(config_file):
 
 def main(args):
     utils.init_distributed_mode(args)
+
+    diag.init(args, rank=utils.get_rank(), script="fintune.py")
 
     print(args)
     args_text = yaml.safe_dump(args.__dict__, default_flow_style=False)
@@ -347,6 +352,7 @@ def main(args):
     if args.eval:
         test_stats = evaluate(data_loader_val, model, device)
         print(f"Accuracy of the network on the {len(dataset_val)} test images: {test_stats['acc1']:.1f}%")
+        diag.close()
         return
 
 
@@ -412,6 +418,8 @@ def main(args):
     if args.output_dir and utils.is_main_process():
         with (output_dir / "log.txt").open("a") as f:
             f.write(json.dumps(total_time_str) + "\n")
+
+    diag.close()
 
 
 if __name__ == '__main__':
