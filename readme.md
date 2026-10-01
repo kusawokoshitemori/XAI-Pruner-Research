@@ -1,6 +1,60 @@
-以下はXAIPrunerのREADMEである．実行方法などを確認することを目的とし，しばらくはそのまま残すこととする
+## 実行例（Base / Small / Tiny, ログ付き）
 
----
+元の XAIPruner Code では Base モデルを使う前提の実行例が基本です。Small / Tiny は、`--model` と `--resume` だけを差し替えれば同じ流れで実行できます。
+
+```bash
+# Base（元の実行例を踏襲）
+python prune-ViT.py \
+  --model deit_base_patch16_224 \
+  --resume ./checkpoint/deit_base_patch16_224.pth \
+  --data_path ./data/imagenet \
+  --output_dir ./output/base \
+  --batch-size 32 \
+  --pruning_rate 0.5 \
+  --protect_rate 0.25 \
+  --population 100 \
+  --generation 100 \
+  --pruning_momentum 0.9 \
+  --diag_dir ./diag_logs
+```
+
+```bash
+# Small
+python prune-ViT.py \
+  --model deit_small_patch16_224 \
+  --resume ./checkpoint/deit_small_patch16_224.pth \
+  --data_path ./data/imagenet \
+  --output_dir ./output/small \
+  --batch-size 32 \
+  --pruning_rate 0.5 \
+  --protect_rate 0.25 \
+  --population 100 \
+  --generation 100 \
+  --pruning_momentum 0.9 \
+  --diag_dir ./diag_logs
+```
+
+```bash
+# Tiny
+python prune-ViT.py \
+  --model deit_tiny_patch16_224 \
+  --resume ./checkpoint/deit_tiny_patch16_224.pth \
+  --data_path ./data/imagenet \
+  --output_dir ./output/tiny \
+  --batch-size 32 \
+  --pruning_rate 0.5 \
+  --protect_rate 0.25 \
+  --population 100 \
+  --generation 100 \
+  --pruning_momentum 0.9 \
+  --diag_dir ./diag_logs
+```
+
+ログの集計は次を実行します。
+
+```bash
+python tools/summarize_diag.py ./diag_logs/<run_id>/rank0
+```
 
 ## 診断ログ（`--diag_dir`）
 
