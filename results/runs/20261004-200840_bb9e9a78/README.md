@@ -3,7 +3,7 @@
 保存時点: 2026-10-11（Asia/Tokyo）
 
 - 処理: `fintune.py`
-- 状態: `finetuning_partial_snapshot`
+- 状態: `finetuning_terminated_sigkill`
 - 条件: `finetuning` / `full_dataset_requested`
 - 生ログの場所（ローカルのみ）: `diag_logs_recheck/20261004-200840_bb9e9a78/rank0`
 
@@ -20,7 +20,7 @@
 
 - 設定・集計のみを保存。重み・tensor・巨大な生ログは含めていません。
 - 不完全な記録の終了理由は、ログだけから断定していません。
-- 途中結果。プロセスの継続・停止はこの保存ログだけでは断定しません。
+- ユーザー提供の端末ログで、2026-10-08 19:51:47にepoch 14の途中（最後の表示4330/5004）でSIGKILL / exitcode -9を確認。原因は未確定。詳細は[終了記録](termination_report.json)。
 
 ## 再現性
 

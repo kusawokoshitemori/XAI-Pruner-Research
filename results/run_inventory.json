@@ -87,7 +87,7 @@
     "run_id": "20261004-200840_bb9e9a78",
     "script": "fintune.py",
     "method": "finetuning",
-    "status": "finetuning_partial_snapshot",
-    "bytes": 10570
+    "status": "finetuning_terminated_sigkill",
+    "bytes": 11378
   }
 ]

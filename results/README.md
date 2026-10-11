@@ -20,13 +20,13 @@
 | [20261004-193503_7db82f62](runs/20261004-193503_7db82f62/README.md) | prune-ViT.py | numerical_fixes_and_diagnostics | pruning_evaluation_completed |
 | [20261004-193659_f6529a8f](runs/20261004-193659_f6529a8f/README.md) | prune-ViT.py | numerical_fixes_and_diagnostics | recorded_workflow_incomplete |
 | [20261004-194102_3030b41f](runs/20261004-194102_3030b41f/README.md) | prune-ViT.py | numerical_fixes_and_diagnostics | pruning_evaluation_completed |
-| [20261004-200840_bb9e9a78](runs/20261004-200840_bb9e9a78/README.md) | fintune.py | finetuning | finetuning_partial_snapshot |
+| [20261004-200840_bb9e9a78](runs/20261004-200840_bb9e9a78/README.md) | fintune.py | finetuning | finetuning_terminated_sigkill |
 
 ## 比較の注意
 
 - 元の枝刈り実行は全候補のFitnessがNaN。候補順位の品質を評価できません。
 - 数値修正版はゼロ分母処理等を変えた条件です。NaN画像を除外した実行とは区別します。乱数固定や候補順も違うため、性能差を数値修正だけに帰属できません。
-- 元のfinetuneは20エポック完了、最終Top-1 54.8501%。修正版に続くfinetuneは14/20エポックの保存ログで、最後のTop-1 47.9866%。途中値と完了値は直接の最終性能比較に使いません。
+- 元のfinetuneは20エポック完了、最終Top-1 54.8501%。修正版に続くfinetuneは14/20エポックの検証記録があり、epoch 14の途中でSIGKILL終了。最後のTop-1 47.9866%。途中値と完了値は直接の最終性能比較に使いません。
 - `metadata_only` は当該実行の精度が確定できない記録。共有output_dirに残る後続実行の精度を誤って割り当てていません。
 - `smoke_subset` は少数画像の動作確認。`recorded_workflow_incomplete` は完了を確認できない記録で、停止原因は断定していません。
 - 今回の結果コミットには既存の訓練・枝刈りコードの未コミット変更を含めていません。

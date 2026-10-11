@@ -28,11 +28,12 @@
     "best_top1": 47.98658640494574,
     "best_top1_epoch": 13,
     "duration": null,
-    "note": "Epoch snapshots are recorded after validation. No duration/end marker means completion is unconfirmed."
+    "note": "14 completed epoch validation records; user-supplied terminal excerpt reports SIGKILL during epoch 14. Cause is undetermined."
   },
   "parent_pruning_run": "20261004-194102_3030b41f",
   "method": "finetuning",
   "method_evidence": "metadata",
   "scope": "full_dataset_requested",
-  "status": "finetuning_partial_snapshot"
+  "status": "finetuning_terminated_sigkill",
+  "termination_report": "termination_report.json"
 }

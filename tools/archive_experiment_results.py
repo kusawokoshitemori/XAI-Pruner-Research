@@ -108,6 +108,12 @@ for r in sorted(runs,key=lambda r:r.parent.name):
  if not prune:
   parent=pruners.get(str((ROOT/a.get('resume','.')).resolve().parent))
   if parent:metrics['parent_pruning_run']=parent
+ if (dst/'termination_report.json').exists():
+  report=json.loads((dst/'termination_report.json').read_text())
+  if report.get('signal')=='SIGKILL':
+   status='finetuning_terminated_sigkill'
+   metrics['termination_report']='termination_report.json'
+   if 'training' in metrics:metrics['training']['note']='Completed epoch validation snapshots; user-supplied termination report records SIGKILL. Cause is undetermined.'
  metrics.update(method=method,method_evidence=evidence,scope=scope,status=status)
  write(dst/'metadata.json',meta);write(dst/'metrics.json',metrics)
  # 現在の設定/構成は上書きされ得るので、出力先の最終runだけに関連付ける。
@@ -132,6 +138,7 @@ for r in sorted(runs,key=lambda r:r.parent.name):
  if method=='numerical_fixes_and_diagnostics':notes.append('ゼロ分母処理などの修正版。NaNデータを単に除外した実行ではありません。乱数固定・候補順も変更されており、精度差をバグ修正単独の効果とは断定できません。')
  if scope=='smoke_subset':notes.append('少数画像の動作確認です。精度を研究上の性能値として比較しません。')
  if not prune and owners.get(str(output))!=rid:notes.append('同じoutput_dirが後続実行で使われているため、現在のlog.txt/configをこの実行へ割り当てていません。')
+ if status=='finetuning_terminated_sigkill':notes.append('ユーザー提供の端末ログでSIGKILL終了を確認。原因は未確定。termination_report.jsonを参照。')
  if status=='finetuning_partial_snapshot':notes.append('途中結果。プロセスの継続・停止はこの保存ログだけでは断定しません。')
  links=['[設定](metadata.json)','[集計](metrics.json)','[生ファイルの識別情報](sources.json)']
  for n in ['epoch_metrics.csv','diagnostic_summary.md','config.yaml','state.yaml','source_code_hashes.json']:

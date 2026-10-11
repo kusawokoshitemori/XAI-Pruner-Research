@@ -1,0 +1,15 @@
+{
+  "source": "User-supplied terminal excerpt, received 2026-10-11; association based on conversation, not an independent raw-file match",
+  "time_reported": "2026-10-08_19:51:47",
+  "epoch": 14,
+  "last_reported_iteration": 4330,
+  "iterations_per_epoch": 5004,
+  "exitcode": -9,
+  "signal": "SIGKILL",
+  "pid": 83840,
+  "cause": "undetermined",
+  "last_reported_time_seconds": 16.3347,
+  "last_reported_data_seconds": 16.072,
+  "last_reported_gpu_max_mem_mb": 5063,
+  "kernel_log_check": "Unprivileged journalctl returned no entries and warned that system journal is not visible; this does not rule out OOM."
+}
