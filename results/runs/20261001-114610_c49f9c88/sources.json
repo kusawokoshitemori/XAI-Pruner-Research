@@ -1,0 +1,134 @@
+{
+  "snapshot_as_of": "2026-10-11",
+  "raw_files": [
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/candidate_evaluations.csv",
+      "bytes": 3955752,
+      "sha256": "b090dfdc7d6320fb2b22027fa47baae1f2d9d3fa326640ae8e7d0328607cb59f",
+      "mtime_ns": 1790822971499457579
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/component_scores.csv",
+      "bytes": 862243,
+      "sha256": "8f78d81007dff260efca9dafd9691729152c01cf4f7ba298bda2bda37c109772",
+      "mtime_ns": 1790822971499457579
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/ea_attempts.csv",
+      "bytes": 7346913,
+      "sha256": "8a639d7855b8946efcb18beea1ef81408c0d7015b087530138ceb9e3d0501d4c",
+      "mtime_ns": 1790822971499457579
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/ea_operator_calls.csv",
+      "bytes": 17718,
+      "sha256": "d388fdabaa5035989471818355fc9c0a69b16caa3494521344d4d80f2db3221f",
+      "mtime_ns": 1790822971499457579
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/events.jsonl",
+      "bytes": 1502914,
+      "sha256": "8ab9a37d05f68b5798e57e9d3b1b6476223a4b61a10dd357ecd61dab18750b13",
+      "mtime_ns": 1790822971499457579
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/initial_relevance.csv",
+      "bytes": 2934218,
+      "sha256": "34f571e5acb22a8de06f90982b2845b0ee11b1b7e93f456e0f59ed5d6d232448",
+      "mtime_ns": 1790822971499457579
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/metadata.json",
+      "bytes": 3234,
+      "sha256": "895f2d21557bf4a64a9bbf3662ab589e44956cb9df6a1ed5cdc1a08268bf44cf",
+      "mtime_ns": 1790822770462451047
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/protect.csv",
+      "bytes": 18966,
+      "sha256": "56363a184b1c36345a955c6b8cb752afb21ea8e991a2e489e46310b1a2176767",
+      "mtime_ns": 1790822971499457579
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/random_generator.csv",
+      "bytes": 1202125,
+      "sha256": "1e237144c7badc616fcb084de4669ece8bc96f63f900aaa21843666d591a1e41",
+      "mtime_ns": 1790822971499457579
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/score_accumulation.csv",
+      "bytes": 5209881,
+      "sha256": "32377d091124ecfe3fe50525b93f7c487505c934dc959b2ff5a7792bbb20b80d",
+      "mtime_ns": 1790822971499457579
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/score_batches.csv",
+      "bytes": 63518,
+      "sha256": "cf743e94d6fdf8e204df9c967448f0a1b03398d4665f1847734dd3d0954d9f02",
+      "mtime_ns": 1790822971499457579
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/scores_after_protect.npz",
+      "bytes": 45168,
+      "sha256": "4c9275067fd6138423fabd6b458ec0c5dd2e04d47e65ad5386dfc87662b61a86",
+      "mtime_ns": 1790822937097908879
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/scores_momentum.npz",
+      "bytes": 45186,
+      "sha256": "b3dbfb86e204c434106d46428ffd94bcab7cc63c6844261ffe4125524d5fb03b",
+      "mtime_ns": 1790822937078908576
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/scores_plain_mean.npz",
+      "bytes": 72198,
+      "sha256": "d0cf7a353493966e184a245891937e7abb0dd5d4e34b4a6c06b9a16ce1bea907",
+      "mtime_ns": 1790822937079908592
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/snapshots/0119_residual_nonfinite_blocks.0.attn_residual.pt",
+      "bytes": 19368803,
+      "sha256": "06832c543a3eebfead57ed9b82755746096a217313fd6e770a4ea3e77f22498c",
+      "mtime_ns": 1790822774088279928
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/snapshots/0124_filter_cnn_nonfinite_patch_embed.proj.filter.pt",
+      "bytes": 4868699,
+      "sha256": "abb9b2a66ca80a86abbcd62b8570bfc5322da1e5ef410758612a6d3d3d413cca",
+      "mtime_ns": 1790822774186281525
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/snapshots/0247_filter_cnn_nonfinite_patch_embed.proj.filter.pt",
+      "bytes": 4868699,
+      "sha256": "fc1b785e1bd54ade2f8007a9dfad18aac2cb16dfed96fc02c48e1302aa7aad85",
+      "mtime_ns": 1790822777275331847
+    },
+    {
+      "path": "diag_logs/20261001-114610_c49f9c88/rank0/summary.md",
+      "bytes": 25787,
+      "sha256": "499f2852cb2bdccde5da16f4c1167b9d8d04fd44e041fc58a9732d7e4cf6ad9b",
+      "mtime_ns": 1791090141321204749
+    },
+    {
+      "path": "output/tiny/checkpoint_pruned.pth",
+      "bytes": 11063739,
+      "sha256": "9cdb62cf0c628d386bd0ea26806c6351411e17d9b6fc8591430687a05d06faf3",
+      "mtime_ns": 1790822943973018688
+    },
+    {
+      "path": "output/tiny/state.yaml",
+      "bytes": 158,
+      "sha256": "d8a3482cce8d05054c7c089aa1b970825339cc3e6c64e11f7f8613a298c15e5e",
+      "mtime_ns": 1790822943948018289
+    }
+  ],
+  "omitted_contents": [
+    "model checkpoints",
+    "tensor snapshots",
+    "raw events/CSV",
+    "NPZ arrays",
+    "source ZIP archives",
+    "console logs"
+  ],
+  "note": "Hashes identify local artifacts; raw contents are intentionally not committed. Live files are snapshots and may later change."
+}
