@@ -1,0 +1,401 @@
+{
+  "run_id": "20261004-193659_f6529a8f",
+  "snapshot_as_of": "2026-10-11",
+  "script": "prune-ViT.py",
+  "raw_directory": "diag_logs_recheck/20261004-193659_f6529a8f/rank0",
+  "event_counts": {
+    "filter_runtime_config": 1,
+    "phase_start": 1,
+    "lrp_model_mode": 1,
+    "linear_lrp": 98,
+    "layernorm_health": 1400,
+    "layernorm_lrp": 64,
+    "residual_add": 48,
+    "filter_rescale": 50,
+    "gate": 48,
+    "conv2d_lrp": 2,
+    "score_health": 112
+  },
+  "observed_events": 1825,
+  "last_observed_batch_id": 55,
+  "key_events": {
+    "filter_runtime_config": {
+      "source_line": 1,
+      "data": {
+        "count": 49,
+        "grouped": {
+          "filtering:0.5": {
+            "count": 25,
+            "examples": [
+              "patch_embed.proj.filter",
+              "blocks.0.filter_attn_in",
+              "blocks.0.filter_mlp_in"
+            ]
+          },
+          "gate:0": {
+            "count": 24,
+            "examples": [
+              "blocks.0.filter_attn_out",
+              "blocks.0.filter_mlp_out",
+              "blocks.1.filter_attn_out"
+            ]
+          }
+        },
+        "filters": [
+          {
+            "module": "patch_embed.proj.filter",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.0.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.0.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.0.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.0.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.1.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.1.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.1.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.1.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.2.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.2.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.2.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.2.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.3.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.3.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.3.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.3.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.4.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.4.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.4.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.4.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.5.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.5.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.5.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.5.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.6.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.6.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.6.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.6.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.7.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.7.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.7.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.7.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.8.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.8.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.8.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.8.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.9.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.9.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.9.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.9.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.10.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.10.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.10.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.10.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.11.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.11.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.11.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.11.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          }
+        ]
+      }
+    }
+  },
+  "layernorm_health": {
+    "nonfinite_element_counts": {
+      "inputs": 0,
+      "outputs": 0,
+      "incoming": 0,
+      "returned": 0
+    },
+    "zero_output_observations": {
+      "blocks.1.norm1": [
+        {
+          "batch": 2,
+          "count": 1,
+          "source_line": 376
+        },
+        {
+          "batch": 42,
+          "count": 1,
+          "source_line": 1466
+        }
+      ],
+      "blocks.6.norm2": [
+        {
+          "batch": 3,
+          "count": 1,
+          "source_line": 393
+        }
+      ],
+      "blocks.0.norm2": [
+        {
+          "batch": 3,
+          "count": 1,
+          "source_line": 406
+        },
+        {
+          "batch": 6,
+          "count": 1,
+          "source_line": 489
+        },
+        {
+          "batch": 22,
+          "count": 1,
+          "source_line": 923
+        }
+      ],
+      "blocks.2.norm1": [
+        {
+          "batch": 6,
+          "count": 1,
+          "source_line": 485
+        },
+        {
+          "batch": 21,
+          "count": 1,
+          "source_line": 892
+        },
+        {
+          "batch": 53,
+          "count": 1,
+          "source_line": 1763
+        }
+      ],
+      "blocks.9.norm1": [
+        {
+          "batch": 27,
+          "count": 1,
+          "source_line": 1042
+        }
+      ],
+      "blocks.11.norm1": [
+        {
+          "batch": 31,
+          "count": 1,
+          "source_line": 1147
+        }
+      ],
+      "blocks.1.norm2": [
+        {
+          "batch": 41,
+          "count": 1,
+          "source_line": 1437
+        }
+      ],
+      "blocks.6.norm1": [
+        {
+          "batch": 43,
+          "count": 1,
+          "source_line": 1484
+        }
+      ],
+      "blocks.0.norm1": [
+        {
+          "batch": 53,
+          "count": 1,
+          "source_line": 1768
+        }
+      ]
+    }
+  },
+  "score_collection": {
+    "batch_count": 0,
+    "sample_count": 0,
+    "nonfinite_new_scores": []
+  },
+  "method": "numerical_fixes_and_diagnostics",
+  "method_evidence": "metadata/source archive",
+  "scope": "full_dataset_requested",
+  "status": "recorded_workflow_incomplete"
+}

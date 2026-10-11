@@ -1,0 +1,116 @@
+{
+  "snapshot_as_of": "2026-10-11",
+  "raw_files": [
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/events.jsonl",
+      "bytes": 1960278,
+      "sha256": "ea7e35c9b568aba5d96f0e944c77da153779580c8bf18c293d2c65b32ba929e3",
+      "mtime_ns": 1791110411509687985
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/initial_relevance.csv",
+      "bytes": 138518,
+      "sha256": "6711e5d23b5b68545c6fc272812f9f5cdbf6e8636b8a32af8d264050984d92da",
+      "mtime_ns": 1791110408290639139
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/metadata.json",
+      "bytes": 3488,
+      "sha256": "c89dddb388697f8a04ef550ce1534fa07261db3e0279e873efb616c4ee0fe15d",
+      "mtime_ns": 1791110219707791463
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/score_accumulation.csv",
+      "bytes": 250634,
+      "sha256": "a95b99eb11143bd063c0042e6eb8b2f364caf1fc35436f154d73d88d633edc4e",
+      "mtime_ns": 1791110409358655345
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/score_batches.csv",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1791110220633805371
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/snapshots/0376_layernorm_anomaly_blocks.1.norm1.pt",
+      "bytes": 19368649,
+      "sha256": "ea09d7a7df60a39cfc292506dd41a342cac3e89671fec8c4e67a223d051df7f5",
+      "mtime_ns": 1791110308928135094
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/snapshots/0393_layernorm_anomaly_blocks.6.norm2.pt",
+      "bytes": 19368649,
+      "sha256": "4ffe76e9e1e3f830f52c4465ed6808ba019aeae1946c1186a6e5d4e506597f7c",
+      "mtime_ns": 1791110310628160763
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/snapshots/0406_layernorm_anomaly_blocks.0.norm2.pt",
+      "bytes": 19368649,
+      "sha256": "6e9191b2a0402b6e3da8b2e3c94149930ad2c75e8c68a70295af48cfcfbc91fc",
+      "mtime_ns": 1791110311280170609
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/snapshots/0485_layernorm_anomaly_blocks.2.norm1.pt",
+      "bytes": 19368649,
+      "sha256": "81196cafb780dff8be7198dd94e2d0b207cdc1ea1afd6165307d8251e34198cd",
+      "mtime_ns": 1791110317368262557
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/snapshots/0489_layernorm_anomaly_blocks.0.norm2.pt",
+      "bytes": 19368649,
+      "sha256": "021535f0742742fb20e66129add2f29aab1277de18161aeca95340e0cbe57128",
+      "mtime_ns": 1791110317669267104
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/snapshots/0892_layernorm_anomaly_blocks.2.norm1.pt",
+      "bytes": 19368649,
+      "sha256": "bd89cf09a166f44f7d983ae5447eba13d192822908ef81f4dc6b90dfd7692865",
+      "mtime_ns": 1791110345820692667
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/snapshots/0923_layernorm_anomaly_blocks.0.norm2.pt",
+      "bytes": 19368649,
+      "sha256": "1a65792a8ff5c6295fa7b37a44a17808cc9b23107c001c63848a3a50a777dc36",
+      "mtime_ns": 1791110347914724348
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/snapshots/1042_layernorm_anomaly_blocks.9.norm1.pt",
+      "bytes": 19368649,
+      "sha256": "8a4c7392211e08e4875ab9b0ebb34d2a980c871124c445ab37ffcce728e6cffa",
+      "mtime_ns": 1791110356433853265
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/snapshots/1147_layernorm_anomaly_blocks.11.norm1.pt",
+      "bytes": 19368659,
+      "sha256": "47630bcfbbb008575aa66600d0d5703edb4121544d0032c106e0f234d6a9009d",
+      "mtime_ns": 1791110363683963022
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/snapshots/1437_layernorm_anomaly_blocks.1.norm2.pt",
+      "bytes": 19368649,
+      "sha256": "98d9883183d6bb09a82c6343c5a27008aa78a69ad5823fe065aeaad4029b7821",
+      "mtime_ns": 1791110383016255874
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/source_code.zip",
+      "bytes": 83499,
+      "sha256": "2cd2cd82ef5975d38d0fa99fcae8dbdef09800ef33e8aae0b3c650ffe088740c",
+      "mtime_ns": 1791110306012091069
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193659_f6529a8f/rank0/source_manifest.json",
+      "bytes": 3134,
+      "sha256": "62b795ec63c487d72176b04a86860c60330f5d9608e7573ed21c79814aeff68b",
+      "mtime_ns": 1791110306007223533
+    }
+  ],
+  "omitted_contents": [
+    "model checkpoints",
+    "tensor snapshots",
+    "raw events/CSV",
+    "NPZ arrays",
+    "source ZIP archives",
+    "console logs"
+  ],
+  "note": "Hashes identify local artifacts; raw contents are intentionally not committed. Live files are snapshots and may later change."
+}
