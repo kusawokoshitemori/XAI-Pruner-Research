@@ -1,0 +1,32 @@
+{
+  "run_id": "20261001-120033_cbb12660",
+  "snapshot_as_of": "2026-10-11",
+  "script": "fintune.py",
+  "raw_directory": "diag_logs/20261001-120033_cbb12660/rank0",
+  "event_counts": {
+    "timing": 1
+  },
+  "observed_events": 1,
+  "last_observed_batch_id": -1,
+  "key_events": {
+    "timing": {
+      "source_line": 1,
+      "data": {
+        "wall_seconds_since_init": 147.6587603859989,
+        "diag_seconds": 0.0,
+        "method_seconds_estimate": 147.6587603859989,
+        "note": "diag_seconds は記録処理の時間。GPU 同期による待ちは手法側に混ざり得るので、純粋な計算時間はログ無効の実行で別途測ること"
+      }
+    }
+  },
+  "score_collection": {
+    "batch_count": 0,
+    "sample_count": 0,
+    "nonfinite_new_scores": []
+  },
+  "parent_pruning_run": "20261001-114610_c49f9c88",
+  "method": "finetuning",
+  "method_evidence": "metadata",
+  "scope": "full_dataset_requested",
+  "status": "diagnostics_only"
+}

@@ -1,0 +1,32 @@
+{
+  "snapshot_as_of": "2026-10-11",
+  "raw_files": [
+    {
+      "path": "diag_logs/20261001-120033_cbb12660/rank0/events.jsonl",
+      "bytes": 459,
+      "sha256": "a9a008442840ae6a1385c9b2409d08489e93eeb73a3e4d3bd17b24eb121ad1e6",
+      "mtime_ns": 1790823780879722248
+    },
+    {
+      "path": "diag_logs/20261001-120033_cbb12660/rank0/metadata.json",
+      "bytes": 3263,
+      "sha256": "496f881c38dff71c04372743f2e8ac3d01e17b4189f818bed93dda0f6c88d3f7",
+      "mtime_ns": 1790823633227544977
+    },
+    {
+      "path": "output/tiny/finetune_check/config.yaml",
+      "bytes": 1404,
+      "sha256": "0c3c0d2aa8eb009d513bcf76589fb34b9a6c641792855e7233b235ad9d0274ef",
+      "mtime_ns": 1790823635186586664
+    }
+  ],
+  "omitted_contents": [
+    "model checkpoints",
+    "tensor snapshots",
+    "raw events/CSV",
+    "NPZ arrays",
+    "source ZIP archives",
+    "console logs"
+  ],
+  "note": "Hashes identify local artifacts; raw contents are intentionally not committed. Live files are snapshots and may later change."
+}
