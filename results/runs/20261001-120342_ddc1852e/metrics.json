@@ -1,0 +1,20 @@
+{
+  "run_id": "20261001-120342_ddc1852e",
+  "snapshot_as_of": "2026-10-11",
+  "script": "fintune.py",
+  "raw_directory": "diag_logs/20261001-120342_ddc1852e/rank0",
+  "event_counts": {},
+  "observed_events": 0,
+  "last_observed_batch_id": -1,
+  "key_events": {},
+  "score_collection": {
+    "batch_count": 0,
+    "sample_count": 0,
+    "nonfinite_new_scores": []
+  },
+  "parent_pruning_run": "20261001-114610_c49f9c88",
+  "method": "finetuning",
+  "method_evidence": "metadata",
+  "scope": "full_dataset_requested",
+  "status": "metadata_only"
+}
