@@ -7,9 +7,20 @@
   "exitcode": -9,
   "signal": "SIGKILL",
   "pid": 83840,
-  "cause": "undetermined",
+  "cause": "confirmed_global_host_memory_oom_kill",
   "last_reported_time_seconds": 16.3347,
   "last_reported_data_seconds": 16.072,
   "last_reported_gpu_max_mem_mb": 5063,
-  "kernel_log_check": "Unprivileged journalctl returned no entries and warned that system journal is not visible; this does not rule out OOM."
+  "kernel_log_check": "Unprivileged journalctl returned no entries and warned that system journal is not visible; this does not rule out OOM.",
+  "kernel_evidence": {
+    "source": "User-supplied sudo grep output from /var/log/kern.log.1",
+    "attachment_sha256": "bf77754b629b5f5e20cc51fde9b9aa1cd0210397b9f3e6303a32e27ae9e33d65",
+    "excerpt": "oom_evidence.txt",
+    "time": "2026-10-08T19:51:46.923720+09:00",
+    "pid": 83840,
+    "constraint": "CONSTRAINT_NONE",
+    "scope": "global_oom",
+    "allocation_trigger_process": "ChatGPT",
+    "interpretation": "Trigger process is not evidence of sole responsibility for total memory exhaustion; full memory/task dump is needed for attribution."
+  }
 }

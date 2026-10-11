@@ -20,10 +20,16 @@
 
 - 設定・集計のみを保存。重み・tensor・巨大な生ログは含めていません。
 - 不完全な記録の終了理由は、ログだけから断定していません。
-- ユーザー提供の端末ログで、2026-10-08 19:51:47にepoch 14の途中（最後の表示4330/5004）でSIGKILL / exitcode -9を確認。原因は未確定。詳細は[終了記録](termination_report.json)。
+- ユーザー提供の端末ログで、2026-10-08 19:51:47にepoch 14の途中（最後の表示4330/5004）でSIGKILL / exitcode -9を確認。後から提供されたOSログでglobal OOMによる終了と確定。詳細は[終了記録](termination_report.json)。
 
 ## 再現性
 
 実行時commit: `dc2ae2a563ebbcd51c8463f2c6fc03b041d0c951`、dirty: `True`。dirty=Trueならcommitだけでは当時の全コードを復元できません。ソースhashがある場合も、ソース本体はローカルarchiveにのみあります。
 
 実行引数はmetadata.jsonのargvを参照。元ファイルとの対応はsources.jsonのpath・SHA-256で追跡できます。
+
+## 終了原因の確定
+
+ユーザー提供のカーネルログで、2026-10-08 19:51:46にglobal_oomが発生し、PID 83840 (python3.10)をOOM killerが終了したことを確認。端末のSIGKILLとPID・時刻が一致。CPU側のシステムメモリ不足による終了であり、GPUメモリ不足やNaNの例外としては記録されていない。根拠は[抜粋](oom_evidence.txt)。
+
+`ChatGPT invoked oom-killer`はOOMを検知したメモリ確保の実行主体を示す。全メモリ消費の原因がChatGPTだけだったとは断定しない。プロセス別の全メモリ表・swap状態がないため、訓練ワーカーや他アプリの負担割合、読み込み遅延とswapの因果は未確定。`total-vm`は仮想メモリで、RAM使用量とは同一ではない。

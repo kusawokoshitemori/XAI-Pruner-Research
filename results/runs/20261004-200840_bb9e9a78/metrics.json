@@ -28,7 +28,7 @@
     "best_top1": 47.98658640494574,
     "best_top1_epoch": 13,
     "duration": null,
-    "note": "14 completed epoch validation records; user-supplied terminal excerpt reports SIGKILL during epoch 14. Cause is undetermined."
+    "note": "14 completed epoch validation records; SIGKILL during epoch 14 confirmed as global host-memory OOM kill by kernel PID/time match. See termination_report.json."
   },
   "parent_pruning_run": "20261004-194102_3030b41f",
   "method": "finetuning",
