@@ -1,0 +1,26 @@
+{
+  "snapshot_as_of": "2026-10-11",
+  "raw_files": [
+    {
+      "path": "diag_logs/20261001-121720_6c82be4b/rank0/events.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1790824640609057291
+    },
+    {
+      "path": "diag_logs/20261001-121720_6c82be4b/rank0/metadata.json",
+      "bytes": 3236,
+      "sha256": "283f060a61bc4b227e96fcf64ebeb796c570aad1ac22b2936a8e5c8d586c2cae",
+      "mtime_ns": 1790824640614057413
+    }
+  ],
+  "omitted_contents": [
+    "model checkpoints",
+    "tensor snapshots",
+    "raw events/CSV",
+    "NPZ arrays",
+    "source ZIP archives",
+    "console logs"
+  ],
+  "note": "Hashes identify local artifacts; raw contents are intentionally not committed. Live files are snapshots and may later change."
+}
