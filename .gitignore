@@ -1,3 +1,11 @@
 checkpoint/*.pth
 __pycache__/
 *.py[cod]
+
+# Large local experiment artifacts; compact records live in results/.
+/diag_logs/
+/diag_logs_recheck/
+/diag_logs_observation/
+/output/
+/output_tiny/
+/analysis/restoration_20261004/*.zip

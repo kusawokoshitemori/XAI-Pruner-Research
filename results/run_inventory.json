@@ -1,0 +1,93 @@
+[
+  {
+    "run_id": "20261001-113843_c49f9c88",
+    "script": "prune-ViT.py",
+    "method": "original_behavior_with_diagnostics",
+    "status": "recorded_workflow_incomplete",
+    "bytes": 15266
+  },
+  {
+    "run_id": "20261001-114610_c49f9c88",
+    "script": "prune-ViT.py",
+    "method": "original_behavior_with_diagnostics",
+    "status": "pruning_evaluation_completed",
+    "bytes": 88756
+  },
+  {
+    "run_id": "20261001-115750_3170f88a",
+    "script": "fintune.py",
+    "method": "finetuning",
+    "status": "metadata_only",
+    "bytes": 5798
+  },
+  {
+    "run_id": "20261001-120010_6c3f73ad",
+    "script": "fintune.py",
+    "method": "finetuning",
+    "status": "metadata_only",
+    "bytes": 5623
+  },
+  {
+    "run_id": "20261001-120033_cbb12660",
+    "script": "fintune.py",
+    "method": "finetuning",
+    "status": "diagnostics_only",
+    "bytes": 7767
+  },
+  {
+    "run_id": "20261001-120342_ddc1852e",
+    "script": "fintune.py",
+    "method": "finetuning",
+    "status": "metadata_only",
+    "bytes": 5806
+  },
+  {
+    "run_id": "20261001-121720_6c82be4b",
+    "script": "fintune.py",
+    "method": "finetuning",
+    "status": "metadata_only",
+    "bytes": 5804
+  },
+  {
+    "run_id": "20261001-122142_1ed34567",
+    "script": "fintune.py",
+    "method": "finetuning",
+    "status": "finetuning_completed",
+    "bytes": 11334
+  },
+  {
+    "run_id": "20261004-193344_258f7af3",
+    "script": "prune-ViT.py",
+    "method": "numerical_fixes_and_diagnostics",
+    "status": "pruning_evaluation_completed",
+    "bytes": 63824
+  },
+  {
+    "run_id": "20261004-193503_7db82f62",
+    "script": "prune-ViT.py",
+    "method": "numerical_fixes_and_diagnostics",
+    "status": "pruning_evaluation_completed",
+    "bytes": 63940
+  },
+  {
+    "run_id": "20261004-193659_f6529a8f",
+    "script": "prune-ViT.py",
+    "method": "numerical_fixes_and_diagnostics",
+    "status": "recorded_workflow_incomplete",
+    "bytes": 22781
+  },
+  {
+    "run_id": "20261004-194102_3030b41f",
+    "script": "prune-ViT.py",
+    "method": "numerical_fixes_and_diagnostics",
+    "status": "pruning_evaluation_completed",
+    "bytes": 102305
+  },
+  {
+    "run_id": "20261004-200840_bb9e9a78",
+    "script": "fintune.py",
+    "method": "finetuning",
+    "status": "finetuning_partial_snapshot",
+    "bytes": 10585
+  }
+]
