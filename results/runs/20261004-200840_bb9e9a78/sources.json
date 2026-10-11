@@ -1,0 +1,44 @@
+{
+  "snapshot_as_of": "2026-10-11",
+  "raw_files": [
+    {
+      "path": "diag_logs_recheck/20261004-200840_bb9e9a78/rank0/events.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1791112120163345715
+    },
+    {
+      "path": "diag_logs_recheck/20261004-200840_bb9e9a78/rank0/metadata.json",
+      "bytes": 3432,
+      "sha256": "f6db3444b2c01a7723298e1ace550dae85b7d249dd8470a1819e1d4342f04a01",
+      "mtime_ns": 1791112120169146059
+    },
+    {
+      "path": "output/diag_recheck_full_20261004-194058/finetune_v1/checkpoint_pruned.pth",
+      "bytes": 32580155,
+      "sha256": "4078016452538b098a5f03e54839673ad38fa68f75bc59f599d71feac5db9d5d",
+      "mtime_ns": 1791416969846237521
+    },
+    {
+      "path": "output/diag_recheck_full_20261004-194058/finetune_v1/config.yaml",
+      "bytes": 1496,
+      "sha256": "b270fefaf95c57f4c4d5f30d70a3a7c2f6e2f7e3b729915cbd6236ea48aad154",
+      "mtime_ns": 1791112127484966528
+    },
+    {
+      "path": "output/diag_recheck_full_20261004-194058/finetune_v1/log.txt",
+      "bytes": 2843,
+      "sha256": "aee6f143901f99d256edb226a35a3c12a0349a2949c3606f91ed9ab3c5564bf9",
+      "mtime_ns": 1791417232344978453
+    }
+  ],
+  "omitted_contents": [
+    "model checkpoints",
+    "tensor snapshots",
+    "raw events/CSV",
+    "NPZ arrays",
+    "source ZIP archives",
+    "console logs"
+  ],
+  "note": "Hashes identify local artifacts; raw contents are intentionally not committed. Live files are snapshots and may later change."
+}
