@@ -1,0 +1,62 @@
+{
+  "snapshot_as_of": "2026-10-11",
+  "raw_files": [
+    {
+      "path": "diag_logs/20261001-113843_c49f9c88/rank0/events.jsonl",
+      "bytes": 1280966,
+      "sha256": "ee05f74c912ae117220fc41102b89e630cbbe21fab6db59166f9ca1aec554152",
+      "mtime_ns": 1790822335289833029
+    },
+    {
+      "path": "diag_logs/20261001-113843_c49f9c88/rank0/initial_relevance.csv",
+      "bytes": 2738503,
+      "sha256": "96f2824dbf6b714431b3551e8c1fafd21e1bd31b37a41645e991040b7d15fee2",
+      "mtime_ns": 1790822722379434235
+    },
+    {
+      "path": "diag_logs/20261001-113843_c49f9c88/rank0/metadata.json",
+      "bytes": 3234,
+      "sha256": "04d991e2456a792a1bcce7d24cfded3eb775ea4ea73e918ad49afade0d1a14dd",
+      "mtime_ns": 1790822323082196333
+    },
+    {
+      "path": "diag_logs/20261001-113843_c49f9c88/rank0/score_accumulation.csv",
+      "bytes": 4864746,
+      "sha256": "cea69355487b97745d47e45c30fa2274f92abff65a45776672cc38db2865d8ff",
+      "mtime_ns": 1790822722380434252
+    },
+    {
+      "path": "diag_logs/20261001-113843_c49f9c88/rank0/score_batches.csv",
+      "bytes": 59263,
+      "sha256": "c5810e296a2beea0f46539858be19690351ac8cd21dfb8077c19449cde250c42",
+      "mtime_ns": 1790822722379434235
+    },
+    {
+      "path": "diag_logs/20261001-113843_c49f9c88/rank0/snapshots/0119_residual_nonfinite_blocks.0.attn_residual.pt",
+      "bytes": 19368803,
+      "sha256": "06832c543a3eebfead57ed9b82755746096a217313fd6e770a4ea3e77f22498c",
+      "mtime_ns": 1790822332075775565
+    },
+    {
+      "path": "diag_logs/20261001-113843_c49f9c88/rank0/snapshots/0124_filter_cnn_nonfinite_patch_embed.proj.filter.pt",
+      "bytes": 4868699,
+      "sha256": "abb9b2a66ca80a86abbcd62b8570bfc5322da1e5ef410758612a6d3d3d413cca",
+      "mtime_ns": 1790822332172777300
+    },
+    {
+      "path": "diag_logs/20261001-113843_c49f9c88/rank0/snapshots/0247_filter_cnn_nonfinite_patch_embed.proj.filter.pt",
+      "bytes": 4868699,
+      "sha256": "fc1b785e1bd54ade2f8007a9dfad18aac2cb16dfed96fc02c48e1302aa7aad85",
+      "mtime_ns": 1790822335235832064
+    }
+  ],
+  "omitted_contents": [
+    "model checkpoints",
+    "tensor snapshots",
+    "raw events/CSV",
+    "NPZ arrays",
+    "source ZIP archives",
+    "console logs"
+  ],
+  "note": "Hashes identify local artifacts; raw contents are intentionally not committed. Live files are snapshots and may later change."
+}

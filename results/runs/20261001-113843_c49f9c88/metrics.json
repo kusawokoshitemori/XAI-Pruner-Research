@@ -1,0 +1,331 @@
+{
+  "run_id": "20261001-113843_c49f9c88",
+  "snapshot_as_of": "2026-10-11",
+  "script": "prune-ViT.py",
+  "raw_directory": "diag_logs/20261001-113843_c49f9c88/rank0",
+  "event_counts": {
+    "filter_runtime_config": 1,
+    "phase_start": 1,
+    "lrp_model_mode": 1,
+    "linear_lrp": 98,
+    "residual_add": 48,
+    "filter_rescale": 50,
+    "gate": 48,
+    "conv2d_lrp": 2
+  },
+  "observed_events": 249,
+  "last_observed_batch_id": 1,
+  "key_events": {
+    "filter_runtime_config": {
+      "source_line": 1,
+      "data": {
+        "count": 49,
+        "grouped": {
+          "filtering:0.5": {
+            "count": 25,
+            "examples": [
+              "patch_embed.proj.filter",
+              "blocks.0.filter_attn_in",
+              "blocks.0.filter_mlp_in"
+            ]
+          },
+          "gate:0": {
+            "count": 24,
+            "examples": [
+              "blocks.0.filter_attn_out",
+              "blocks.0.filter_mlp_out",
+              "blocks.1.filter_attn_out"
+            ]
+          }
+        },
+        "filters": [
+          {
+            "module": "patch_embed.proj.filter",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.0.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.0.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.0.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.0.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.1.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.1.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.1.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.1.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.2.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.2.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.2.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.2.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.3.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.3.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.3.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.3.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.4.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.4.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.4.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.4.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.5.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.5.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.5.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.5.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.6.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.6.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.6.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.6.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.7.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.7.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.7.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.7.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.8.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.8.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.8.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.8.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.9.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.9.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.9.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.9.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.10.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.10.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.10.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.10.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.11.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.11.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.11.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.11.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          }
+        ]
+      }
+    }
+  },
+  "score_collection": {
+    "batch_count": 1062,
+    "sample_count": 33984,
+    "nonfinite_new_scores": [
+      {
+        "batch": 272,
+        "group": "dim",
+        "nan": 192,
+        "posinf": 0
+      },
+      {
+        "batch": 624,
+        "group": "dim",
+        "nan": 192,
+        "posinf": 0
+      },
+      {
+        "batch": 766,
+        "group": "dim",
+        "nan": 192,
+        "posinf": 0
+      },
+      {
+        "batch": 771,
+        "group": "dim",
+        "nan": 192,
+        "posinf": 0
+      },
+      {
+        "batch": 934,
+        "group": "dim",
+        "nan": 192,
+        "posinf": 0
+      }
+    ]
+  },
+  "method": "original_behavior_with_diagnostics",
+  "method_evidence": "metadata",
+  "scope": "full_dataset_requested",
+  "status": "recorded_workflow_incomplete"
+}
