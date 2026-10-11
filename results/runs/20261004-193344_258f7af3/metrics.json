@@ -1,0 +1,1375 @@
+{
+  "run_id": "20261004-193344_258f7af3",
+  "snapshot_as_of": "2026-10-11",
+  "script": "prune-ViT.py",
+  "raw_directory": "diag_logs_recheck/20261004-193344_258f7af3/rank0",
+  "event_counts": {
+    "filter_runtime_config": 1,
+    "phase_start": 3,
+    "lrp_model_mode": 1,
+    "linear_lrp": 98,
+    "layernorm_health": 50,
+    "layernorm_lrp": 50,
+    "residual_add": 48,
+    "filter_rescale": 50,
+    "gate": 48,
+    "conv2d_lrp": 2,
+    "score_health": 4,
+    "score_aggregation_comparison": 1,
+    "protect_check": 1,
+    "score_version": 1,
+    "component_size_definition": 1,
+    "ea_config": 1,
+    "ea_generation": 100,
+    "final_consistency": 1,
+    "model_build": 1,
+    "final_evaluation_after_pruning_before_finetune": 1,
+    "timing": 1
+  },
+  "observed_events": 464,
+  "last_observed_batch_id": 1,
+  "key_events": {
+    "filter_runtime_config": {
+      "source_line": 1,
+      "data": {
+        "count": 49,
+        "grouped": {
+          "filtering:0.5": {
+            "count": 25,
+            "examples": [
+              "patch_embed.proj.filter",
+              "blocks.0.filter_attn_in",
+              "blocks.0.filter_mlp_in"
+            ]
+          },
+          "gate:0": {
+            "count": 24,
+            "examples": [
+              "blocks.0.filter_attn_out",
+              "blocks.0.filter_mlp_out",
+              "blocks.1.filter_attn_out"
+            ]
+          }
+        },
+        "filters": [
+          {
+            "module": "patch_embed.proj.filter",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.0.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.0.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.0.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.0.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.1.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.1.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.1.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.1.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.2.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.2.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.2.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.2.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.3.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.3.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.3.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.3.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.4.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.4.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.4.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.4.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.5.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.5.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.5.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.5.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.6.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.6.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.6.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.6.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.7.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.7.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.7.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.7.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.8.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.8.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.8.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.8.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.9.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.9.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.9.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.9.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.10.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.10.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.10.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.10.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.11.filter_attn_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.11.filter_mlp_out",
+            "keep_fraction": 0,
+            "role": "gate"
+          },
+          {
+            "module": "blocks.11.filter_attn_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          },
+          {
+            "module": "blocks.11.filter_mlp_in",
+            "keep_fraction": 0.5,
+            "role": "filtering"
+          }
+        ]
+      }
+    },
+    "score_aggregation_comparison": {
+      "source_line": 354,
+      "data": {
+        "batches": 2,
+        "momentum": 0.9,
+        "final_weight_of_first_batch": 0.9,
+        "note": "現行は scores = momentum*scores + new。重み m^(T-t) で後ろのバッチほど強い",
+        "by_group": {
+          "head": {
+            "spearman_momentum_vs_plain_mean": 0.9992277992277993,
+            "lowest_10pct_overlap": 1.0,
+            "lowest_30pct_overlap": 1.0,
+            "lowest_50pct_overlap": 1.0
+          },
+          "hidden": {
+            "spearman_momentum_vs_plain_mean": 0.9998621819371313,
+            "lowest_10pct_overlap": 0.99457111834962,
+            "lowest_30pct_overlap": 0.9931259044862518,
+            "lowest_50pct_overlap": 0.9952256944444444
+          },
+          "dim": {
+            "spearman_momentum_vs_plain_mean": 0.999688034072105,
+            "lowest_10pct_overlap": 1.0,
+            "lowest_30pct_overlap": 0.9649122807017544,
+            "lowest_50pct_overlap": 1.0
+          }
+        }
+      }
+    },
+    "protect_check": {
+      "source_line": 356,
+      "data": {
+        "kind": "vit",
+        "requested_protect_count_per_layer": 1,
+        "note": null,
+        "head_inf_after": 12,
+        "head_total": 36
+      }
+    },
+    "component_size_definition": {
+      "source_line": 358,
+      "data": {
+        "parameter_count_definition": "単独削除で減るパラメータ数（他の構造は残す）。Head と Dim は重複するので和は同時削除の削減量ではない",
+        "g_head": 49344,
+        "g_hidden": 385,
+        "g_dim": 29689,
+        "n_head": 12608,
+        "n_hidden": 197,
+        "n_dim": 197,
+        "raw_shape": {
+          "head": [
+            4,
+            3,
+            197,
+            64
+          ],
+          "hidden": [
+            4,
+            197,
+            768
+          ],
+          "dim": [
+            4,
+            197,
+            192
+          ]
+        },
+        "sum_axes": {
+          "head": "tokens x head_dim (dims 2,3)",
+          "hidden": "tokens (dim 1)",
+          "dim": "tokens (dim 1)"
+        }
+      }
+    },
+    "ea_config": {
+      "source_line": 359,
+      "data": {
+        "kind": "vit",
+        "population": 100,
+        "epochs": 100,
+        "target": 0.5,
+        "epsilon": 0.0001,
+        "protect": 0.25,
+        "note_top_k": "top_k は割合ではなく絶対個数",
+        "note_constraint": "ViT: get_complexity による FLOPs 削減率"
+      }
+    },
+    "final_consistency": {
+      "source_line": 460,
+      "data": {
+        "kind": "vit",
+        "candidate_id": "8e94411334fbf086",
+        "rates": [
+          0.49203321392549865,
+          6.103515625e-05,
+          0.2754189264938054
+        ],
+        "implementation_legal": true,
+        "diagnostic_bounds_ok": true,
+        "candidate_requested_counts": {
+          "dim": 94,
+          "hidden": 0,
+          "head": 9
+        },
+        "mask_deleted_counts": {
+          "dim": 94,
+          "hidden": 0,
+          "head": 9
+        },
+        "counts_match": true,
+        "fitness_score": 0.7115657925605774,
+        "fitness_recomputed_from_final_mask": 0.711565837264061,
+        "fitness_relative_diff": 6.282410431883886e-08,
+        "fitness_mask_consistent": true,
+        "candidate_mask_id": "ceec99c83bb693c7",
+        "final_mask_id_from_deleted_counts": "ceec99c83bb693c7",
+        "final_mask_hash": "70e2fca1dcdadc2d",
+        "note_mask_id": "candidate_mask_id と final_mask_id_from_deleted_counts は同じ規則（削除数）。final_mask_hash はマスク本体のハッシュ",
+        "deleted_heads_per_layer": [
+          1,
+          1,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "deleted_hidden_per_layer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "constraint_value": 0.5000458125081861
+      }
+    },
+    "model_build": {
+      "source_line": 462,
+      "data": {
+        "kind": "vit",
+        "model_build_success": true,
+        "model_build_error": null,
+        "original_parameters": 5717416,
+        "pruned_parameters": 2699130,
+        "actual_parameter_reduction": 0.527910860430656,
+        "original_flops_get_complexity": 1254590976.0,
+        "pruned_flops_get_complexity": 638728256.0,
+        "actual_flops_reduction": 0.49088725471591466,
+        "target": 0.5,
+        "actual_model_dimensions": {
+          "patch_embed.proj.weight": [
+            98,
+            3,
+            16,
+            16
+          ],
+          "blocks.0.attn.qkv.weight": [
+            384,
+            98
+          ],
+          "blocks.0.mlp.fc1.weight": [
+            768,
+            98
+          ],
+          "blocks.1.attn.qkv.weight": [
+            384,
+            98
+          ],
+          "blocks.1.mlp.fc1.weight": [
+            768,
+            98
+          ],
+          "blocks.2.attn.qkv.weight": [
+            192,
+            98
+          ],
+          "blocks.2.mlp.fc1.weight": [
+            768,
+            98
+          ],
+          "blocks.3.attn.qkv.weight": [
+            384,
+            98
+          ],
+          "blocks.3.mlp.fc1.weight": [
+            768,
+            98
+          ],
+          "blocks.4.attn.qkv.weight": [
+            384,
+            98
+          ],
+          "blocks.4.mlp.fc1.weight": [
+            768,
+            98
+          ],
+          "blocks.5.attn.qkv.weight": [
+            384,
+            98
+          ],
+          "blocks.5.mlp.fc1.weight": [
+            768,
+            98
+          ],
+          "blocks.6.attn.qkv.weight": [
+            384,
+            98
+          ],
+          "blocks.6.mlp.fc1.weight": [
+            768,
+            98
+          ],
+          "blocks.7.attn.qkv.weight": [
+            384,
+            98
+          ],
+          "blocks.7.mlp.fc1.weight": [
+            768,
+            98
+          ],
+          "blocks.8.attn.qkv.weight": [
+            576,
+            98
+          ],
+          "blocks.8.mlp.fc1.weight": [
+            768,
+            98
+          ],
+          "blocks.9.attn.qkv.weight": [
+            576,
+            98
+          ],
+          "blocks.9.mlp.fc1.weight": [
+            768,
+            98
+          ],
+          "blocks.10.attn.qkv.weight": [
+            576,
+            98
+          ],
+          "blocks.10.mlp.fc1.weight": [
+            768,
+            98
+          ],
+          "blocks.11.attn.qkv.weight": [
+            576,
+            98
+          ],
+          "blocks.11.mlp.fc1.weight": [
+            768,
+            98
+          ]
+        }
+      }
+    },
+    "final_evaluation_after_pruning_before_finetune": {
+      "source_line": 463,
+      "data": {
+        "loss": 8.00918960571289,
+        "acc1": 0.0,
+        "acc5": 0.0
+      }
+    },
+    "timing": {
+      "source_line": 464,
+      "data": {
+        "wall_seconds_since_init": 18.161353945033625,
+        "diag_seconds": 12.443118475086521,
+        "method_seconds_estimate": 5.718235469947103,
+        "note": "diag_seconds は記録処理の時間。GPU 同期による待ちは手法側に混ざり得るので、純粋な計算時間はログ無効の実行で別途測ること"
+      }
+    }
+  },
+  "layernorm_health": {
+    "nonfinite_element_counts": {
+      "inputs": 0,
+      "outputs": 0,
+      "incoming": 0,
+      "returned": 0
+    },
+    "zero_output_observations": {}
+  },
+  "score_collection": {
+    "batch_count": 2,
+    "sample_count": 8,
+    "nonfinite_new_scores": []
+  },
+  "stored_score_array_health": {
+    "scores_after_protect.npz": {
+      "head__0": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 1,
+        "neginf": 0
+      },
+      "head__1": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 1,
+        "neginf": 0
+      },
+      "head__2": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 1,
+        "neginf": 0
+      },
+      "head__3": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 1,
+        "neginf": 0
+      },
+      "head__4": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 1,
+        "neginf": 0
+      },
+      "head__5": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 1,
+        "neginf": 0
+      },
+      "head__6": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 1,
+        "neginf": 0
+      },
+      "head__7": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 1,
+        "neginf": 0
+      },
+      "head__8": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 1,
+        "neginf": 0
+      },
+      "head__9": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 1,
+        "neginf": 0
+      },
+      "head__10": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 1,
+        "neginf": 0
+      },
+      "head__11": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 1,
+        "neginf": 0
+      },
+      "hidden__0": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__1": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__2": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__3": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__4": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__5": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__6": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__7": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__8": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__9": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__10": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__11": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "dim": {
+        "shape": [
+          192
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      }
+    },
+    "scores_momentum.npz": {
+      "head__0": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__1": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__2": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__3": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__4": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__5": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__6": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__7": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__8": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__9": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__10": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__11": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__0": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__1": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__2": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__3": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__4": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__5": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__6": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__7": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__8": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__9": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__10": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__11": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "dim": {
+        "shape": [
+          192
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      }
+    },
+    "scores_plain_mean.npz": {
+      "head__0": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__1": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__2": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__3": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__4": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__5": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__6": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__7": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__8": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__9": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__10": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "head__11": {
+        "shape": [
+          3
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__0": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__1": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__2": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__3": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__4": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__5": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__6": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__7": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__8": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__9": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__10": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "hidden__11": {
+        "shape": [
+          768
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      },
+      "dim": {
+        "shape": [
+          192
+        ],
+        "nan": 0,
+        "posinf": 0,
+        "neginf": 0
+      }
+    }
+  },
+  "operators": {
+    "crossover": {
+      "attempts": 10000,
+      "legal": 2536,
+      "parent_pool_duplicate": 2518,
+      "kids_duplicate": 289,
+      "novel_candidate_additions": 18,
+      "novel_mask_additions": 1,
+      "mutation_gene_counts": {}
+    },
+    "mutation": {
+      "attempts": 10000,
+      "legal": 4189,
+      "parent_pool_duplicate": 4176,
+      "kids_duplicate": 733,
+      "novel_candidate_additions": 13,
+      "novel_mask_additions": 9,
+      "mutation_gene_counts": {
+        "1": 4221,
+        "0": 4176,
+        "2": 1453,
+        "3": 150
+      }
+    }
+  },
+  "candidate_evaluations": {
+    "rows": 10031,
+    "nonfinite_fitness_rows": 0,
+    "epochs": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99
+    ],
+    "selected_rows": 5000,
+    "note": "Each row is a candidate in one generation; repeated candidates across generations are not independent observations."
+  },
+  "ea_selection": {
+    "generations": 100,
+    "fitness_nonfinite_rows": 0,
+    "sources": {
+      "previous": {
+        "generated": 4950,
+        "survived": 4759
+      },
+      "random": {
+        "generated": 5050,
+        "survived": 220
+      },
+      "cross_only": {
+        "generated": 18,
+        "survived": 16
+      },
+      "mutation_only": {
+        "generated": 13,
+        "survived": 5
+      },
+      "both_ops": {
+        "generated": 0,
+        "survived": 0
+      }
+    },
+    "note": "Sources describe the most recent generation, not ancestry. Survival with nonfinite Fitness does not measure quality."
+  },
+  "method": "numerical_fixes_and_diagnostics",
+  "method_evidence": "metadata; CPU修正版の分類は会話の実行記録による",
+  "scope": "smoke_subset",
+  "status": "pruning_evaluation_completed"
+}

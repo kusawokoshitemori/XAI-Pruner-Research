@@ -1,0 +1,116 @@
+{
+  "snapshot_as_of": "2026-10-11",
+  "raw_files": [
+    {
+      "path": "diag_logs_recheck/20261004-193344_258f7af3/rank0/candidate_evaluations.csv",
+      "bytes": 4830156,
+      "sha256": "c47e20b444b53cea00c873968863eedf87a445dfc6a59f0ffadc2ec276cf8e36",
+      "mtime_ns": 1791110042536147920
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193344_258f7af3/rank0/component_scores.csv",
+      "bytes": 876543,
+      "sha256": "caf6e92d99bbd38c724778ce89613c7a89be8d90f99ecb606afc235c8810da43",
+      "mtime_ns": 1791110042536147920
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193344_258f7af3/rank0/ea_attempts.csv",
+      "bytes": 7345547,
+      "sha256": "6317b783f8d870fc91cea26807481af12f74baa130fee0cecb52c7f9f4b82ef7",
+      "mtime_ns": 1791110042536147920
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193344_258f7af3/rank0/ea_operator_calls.csv",
+      "bytes": 17699,
+      "sha256": "eb589177fbf4eaf160fa08a590131158975ab748814f1eaae66634078d38259d",
+      "mtime_ns": 1791110042536147920
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193344_258f7af3/rank0/events.jsonl",
+      "bytes": 1649850,
+      "sha256": "7fc617e91cd6401d6324c61db133e56003644d68e6e5c9d81040894be5fc225b",
+      "mtime_ns": 1791110042536147920
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193344_258f7af3/rank0/initial_relevance.csv",
+      "bytes": 730,
+      "sha256": "542ef018e323e2f552ff506e49853abf1207b9f94257e6920f220ba873f3def1",
+      "mtime_ns": 1791110042536147920
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193344_258f7af3/rank0/metadata.json",
+      "bytes": 3480,
+      "sha256": "cdb80409ffa438886e987c4c6b5fb36c28bdf32524cfeffd937e27ec94def280",
+      "mtime_ns": 1791110024381228348
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193344_258f7af3/rank0/protect.csv",
+      "bytes": 19811,
+      "sha256": "e181d7a4c430cb313f5ccbda8aeb21c91df1c2d333e7c029b771e9691c1b7f5f",
+      "mtime_ns": 1791110042536147920
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193344_258f7af3/rank0/random_generator.csv",
+      "bytes": 1202125,
+      "sha256": "24cdc7b7073f10aeef3cdddbb1a602e5815fdc0964922108a209a9fbb98c956d",
+      "mtime_ns": 1791110042536147920
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193344_258f7af3/rank0/score_accumulation.csv",
+      "bytes": 9604,
+      "sha256": "8478381f808e0f7bef500a37a95acf164033ac85fe0b667e57ca366ed43afc8b",
+      "mtime_ns": 1791110042536147920
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193344_258f7af3/rank0/score_batches.csv",
+      "bytes": 230,
+      "sha256": "102e5c641880d97545319f662947f9c6d604ef21e8af461e99cfeba9e997d500",
+      "mtime_ns": 1791110042536147920
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193344_258f7af3/rank0/scores_after_protect.npz",
+      "bytes": 46999,
+      "sha256": "81633426e6d6dbf01ca645117c24089eb8f363d60f0c0d8d3121ba1b951c1604",
+      "mtime_ns": 1791110034858300237
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193344_258f7af3/rank0/scores_momentum.npz",
+      "bytes": 47019,
+      "sha256": "71fb8ea00871e268dd995b9f8a46d953d07125ce66b94a8453ff48d2bac0af2e",
+      "mtime_ns": 1791110034839532742
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193344_258f7af3/rank0/scores_plain_mean.npz",
+      "bytes": 49575,
+      "sha256": "f48865b4ff188c2195aad6e1a28134f593d5393d6c79e16995c7154275ea7244",
+      "mtime_ns": 1791110034843084671
+    },
+    {
+      "path": "diag_logs_recheck/20261004-193344_258f7af3/rank0/summary.md",
+      "bytes": 25461,
+      "sha256": "b3795c87035f8165699569f13c5682417508c45d99918fca2f03ee432eb27e70",
+      "mtime_ns": 1791110082025085269
+    },
+    {
+      "path": "output/diag_recheck_cpu/checkpoint_pruned.pth",
+      "bytes": 10851131,
+      "sha256": "2edaeb4e0331b6f57c8832d168bd84058bae169b6da0bdf91b5744a02f8e9bda",
+      "mtime_ns": 1791110042442865571
+    },
+    {
+      "path": "output/diag_recheck_cpu/state.yaml",
+      "bytes": 157,
+      "sha256": "7d281b4bedaa3d4cc6b12431c1160603aa78f4806d50939d21c5fc5a002d9ec9",
+      "mtime_ns": 1791110042433146395
+    }
+  ],
+  "omitted_contents": [
+    "model checkpoints",
+    "tensor snapshots",
+    "raw events/CSV",
+    "NPZ arrays",
+    "source ZIP archives",
+    "console logs"
+  ],
+  "note": "Hashes identify local artifacts; raw contents are intentionally not committed. Live files are snapshots and may later change."
+}
