@@ -1,0 +1,50 @@
+{
+  "run_id": "20261001-122142_1ed34567",
+  "snapshot_as_of": "2026-10-11",
+  "script": "fintune.py",
+  "raw_directory": "diag_logs/20261001-122142_1ed34567/rank0",
+  "event_counts": {
+    "timing": 1
+  },
+  "observed_events": 1,
+  "last_observed_batch_id": -1,
+  "key_events": {
+    "timing": {
+      "source_line": 1,
+      "data": {
+        "wall_seconds_since_init": 169675.25119513198,
+        "diag_seconds": 0.0,
+        "method_seconds_estimate": 169675.25119513198,
+        "note": "diag_seconds は記録処理の時間。GPU 同期による待ちは手法側に混ざり得るので、純粋な計算時間はログ無効の実行で別途測ること"
+      }
+    }
+  },
+  "score_collection": {
+    "batch_count": 0,
+    "sample_count": 0,
+    "nonfinite_new_scores": []
+  },
+  "training": {
+    "recorded_epochs": 20,
+    "requested_epochs": 20,
+    "last_epoch": 19,
+    "last": {
+      "train_lr": 5.497788376922158e-06,
+      "train_loss": 4.656655467433228,
+      "test_loss": 2.097348279423184,
+      "test_acc1": 54.85005909688614,
+      "test_acc5": 79.50578598645714,
+      "epoch": 19,
+      "n_parameters": 2751984
+    },
+    "best_top1": 54.85005909688614,
+    "best_top1_epoch": 19,
+    "duration": "1 day, 23:07:43",
+    "note": "Epoch snapshots are recorded after validation. No duration/end marker means completion is unconfirmed."
+  },
+  "parent_pruning_run": "20261001-114610_c49f9c88",
+  "method": "finetuning",
+  "method_evidence": "metadata",
+  "scope": "full_dataset_requested",
+  "status": "finetuning_completed"
+}
