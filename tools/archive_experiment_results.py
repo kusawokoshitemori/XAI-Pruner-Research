@@ -103,7 +103,7 @@ for r in sorted(runs,key=lambda r:r.parent.name):
    metrics['training']=dict(recorded_epochs=len(curve),requested_epochs=a.get('epochs'),last_epoch=curve[-1].get('epoch'),last=curve[-1],best_top1=max(x['test_acc1'] for x in curve),best_top1_epoch=max(curve,key=lambda x:x['test_acc1'])['epoch'],duration=duration,note='Epoch snapshots are recorded after validation. No duration/end marker means completion is unconfirmed.')
    fields=list(curve[0]);
    with (dst/'epoch_metrics.csv').open('w',newline='') as f:
-    w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(curve)
+    w=csv.DictWriter(f,fieldnames=fields,lineterminator='\n');w.writeheader();w.writerows(curve)
    extra.append(output/'log.txt')
  if not prune:
   parent=pruners.get(str((ROOT/a.get('resume','.')).resolve().parent))
@@ -154,6 +154,8 @@ for r in sorted(runs,key=lambda r:r.parent.name):
   s=(ROOT/'analysis/diagnostic_log_analysis_20261001.md').read_text();(dst/'analysis.md').write_text('> 10/4時点の元実行の分析。後の修正版実験とは区別。ローカル生ログはコミット対象外。\n\n'+s)
  if rid=='20261004-194102_3030b41f':
   (dst/'comparison.md').write_text('''# 元実行との比較\n\n元実行: [20261001-114610_c49f9c88](../20261001-114610_c49f9c88/README.md)。\n\n| 項目 | 元実行 | 修正版 |\n|---|---:|---:|\n| 収集画像数 | 36,381 | 36,381 |\n| 最終dimension NaN | 192/192 | 0/192 |\n| 非有限Fitness | 10,019/10,019 | 0/10,029 |\n| fine-tuning前Top-1 | 0.1704% | 0.0907% |\n\n両実行のinitial_relevance.csvの画像hashは全36,381行で同じ順序に一致した（10/4の照合）。元でNaNを観測したバッチ272/624/766/771/934と、修正版の最終LayerNorm raw出力ゼロのバッチが一致。metrics.jsonのlayernorm_healthおよび元実行のscore_collectionで確認できる。\n\nゼロ分母処理の関与を強く支持するが、元の全5バッチを旧式/新式で対照再計算した実験ではない。また乱数固定・候補順も同時に変更されており、性能差を数値修正だけの効果とは解釈しない。NaNを解消しても枝刈り直後の精度は低い。fine-tuningは別実行として保存する。\n''')
+ for markdown in dst.glob('*.md'):
+  markdown.write_text('\n'.join(line.rstrip() for line in markdown.read_text().splitlines())+'\n')
  size=sum(p.stat().st_size for p in dst.rglob('*') if p.is_file())
  if size>256*1024:raise RuntimeError(f'{rid} archive too large: {size}')
  index.append(dict(run_id=rid,script=meta.get('script'),method=method,status=status,bytes=size))
