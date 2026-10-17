@@ -1,0 +1,71 @@
+{
+  "snapshot_date_jst": "2026-10-18",
+  "note": "Training log bytes were captured once. Live checkpoint contents are not inspected or archived. Source paths are local and raw files are excluded from GitHub.",
+  "files": [
+    {
+      "path": "diag_logs_reproduction/20261013-133112_8236a79c/rank0/metadata.json",
+      "bytes": 3401,
+      "sha256": "56aa967726ab5bd3cacccbb59bd70b6f4351534e9df1b9a6a7a5d714e1bdfb11"
+    },
+    {
+      "path": "diag_logs_reproduction/20261013-133112_8236a79c/rank0/events.jsonl",
+      "bytes": 11177820,
+      "sha256": "a0cafa057fa3f0e1ba5493c18196c9b14584878a0a9ffeeb9c6af8de7aaf4165"
+    },
+    {
+      "path": "diag_logs_reproduction/20261013-133112_8236a79c/rank0/score_accumulation.csv",
+      "bytes": 3564844,
+      "sha256": "05a2e93a3688fd7e26d06e6261a7f8938c2c9ad7f77b63d753e9f4f7fbe7adde"
+    },
+    {
+      "path": "diag_logs_reproduction/20261013-133112_8236a79c/rank0/score_batches.csv",
+      "bytes": 44547,
+      "sha256": "8d9dc836fd70014a0048a02d529c35dbd38d51c1bc0474537cd49450f9c86847"
+    },
+    {
+      "path": "diag_logs_reproduction/20261013-133112_8236a79c/rank0/candidate_evaluations.csv",
+      "bytes": 3961624,
+      "sha256": "40b10f2abd4d484ee9d6013cf90f136cc044666435378955f30bed8e988aca5f"
+    },
+    {
+      "path": "diag_logs_reproduction/20261013-133112_8236a79c/rank0/ea_attempts.csv",
+      "bytes": 7391457,
+      "sha256": "8acde5e0fdf96d61472d5b068679dfa26ac7e6c21f113f54809ba21e0153e35e"
+    },
+    {
+      "path": "diag_logs_reproduction/20261013-133112_8236a79c/rank0/scores_momentum.npz",
+      "bytes": 45186,
+      "sha256": "908aae00c2dc0ae22f2696cf04f4ef282153a11ba45b4a68d66a4565314dc675"
+    },
+    {
+      "path": "diag_logs_reproduction/20261013-140236_906ce367/rank0/metadata.json",
+      "bytes": 3481,
+      "sha256": "072dd5f5032b2c766ecfa9ecdddcf0b382f0b68b7896b6a4489a37d120977f44"
+    },
+    {
+      "path": "output/tiny_reproduction_20261013-133056/state.yaml",
+      "bytes": 158,
+      "sha256": "08b5363fc9737144e494648028f3fb679e5b8a06460593bb621f76499ddd0717"
+    },
+    {
+      "path": "output/tiny_reproduction_20261013-133056/finetune/config.yaml",
+      "bytes": 1495,
+      "sha256": "c53444d523df884ff4369db2594fbbd427c28e5c44bc8f4d992eeb2c4183b689"
+    },
+    {
+      "path": "checkpoint/deit_tiny_patch16_224.pth",
+      "bytes": 22917895,
+      "sha256": "a1311bcf4f24e3c95adaa75535db67bc4412d95535b98f7c1dfd1164dda41c97"
+    },
+    {
+      "path": "output/tiny_reproduction_20261013-133056/checkpoint_pruned.pth",
+      "bytes": 17612091,
+      "sha256": "6420eaf50f0381022ba3335fae949710a0c9162b81301c1d3469b499d2f02b72"
+    },
+    {
+      "path": "output/tiny_reproduction_20261013-133056/finetune/log.txt",
+      "bytes": 11024,
+      "sha256": "1798f03f7ec00bf84dd853c59190184551b6595e3ef3126277b0c52563a6baff"
+    }
+  ]
+}

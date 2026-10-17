@@ -1,0 +1,9 @@
+# 実際のmetadata.argvから再構成。学習率等を変更せず記録したもの。再実行しないこと。
+
+# pruning
+python -u prune-ViT.py --model deit_tiny_patch16_224 --resume ./checkpoint/deit_tiny_patch16_224.pth --data_path /mnt/data1/imagenet --data_set EVO_IMNET --output_dir ./output/tiny_reproduction_20261013-133056 --batch-size 128 --pruning_rate 0.244 --protect_rate 0.25 --filter_percent 0.5 --population 100 --generation 100 --pruning_momentum 0.9 --seed 0 --diag_dir ./diag_logs_reproduction
+
+# finetuning
+torchrun --nproc_per_node=1 fintune.py --model deit_tiny_patch16_224 --data_path /mnt/data1/imagenet --cfg ./output/tiny_reproduction_20261013-133056/state.yaml --resume ./output/tiny_reproduction_20261013-133056/checkpoint_pruned.pth --output_dir ./output/tiny_reproduction_20261013-133056/finetune --batch-size 128 --epochs 300 --lr 1e-3 --min-lr 1e-5 --warmup-epochs 0 --cooldown-epochs 0 --weight-decay 0.05 --seed 0 --diag_dir ./diag_logs_reproduction
+
+# TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD=1は会話で指定。実行時環境変数はmetadata未収録のため、実行時設定の直接証拠とは区別。

@@ -1,0 +1,33 @@
+{
+  "date_jst": "2026-10-18",
+  "scope": "CPU local constant-input LayerNorm backward only; not a full-model or GPU comparison",
+  "upstream_commit": "45421da8e7a1ec4a93ac2d8284e4ae1152fae9a2",
+  "upstream_rules_sha256": "3148b9c48684cb2199488d36f0432bfe42e36ae7a927d9adf4b183b2c6a714ca",
+  "test": {
+    "x_shape": [
+      2,
+      3,
+      4
+    ],
+    "x_value": 1,
+    "weight": 1,
+    "bias": 0,
+    "variance_epsilon": 1e-05,
+    "epsilon": 1e-06,
+    "incoming_relevance": 0
+  },
+  "results": {
+    "upstream": {
+      "stabilize_zero": 0.0,
+      "forward_nan_elements": 0,
+      "returned_relevance_nan_elements": 24,
+      "elements": 24
+    },
+    "instrumented": {
+      "stabilize_zero": 0.0,
+      "forward_nan_elements": 0,
+      "returned_relevance_nan_elements": 24,
+      "elements": 24
+    }
+  }
+}

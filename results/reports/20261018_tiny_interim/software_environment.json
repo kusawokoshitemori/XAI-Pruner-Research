@@ -1,0 +1,25 @@
+{
+  "observed_date_jst": "2026-10-18",
+  "scope": "Current conda environment; not a launch-time environment lock",
+  "packages": {
+    "torch": "2.14.0",
+    "torchvision": "0.29.0",
+    "timm": "1.0.30",
+    "numpy": "2.2.6",
+    "Pillow": "12.3.0",
+    "PyYAML": "6.0.3",
+    "matplotlib": "3.10.9"
+  },
+  "torch_cuda_build": "13.0",
+  "cudnn_api_version": 92400,
+  "hardware_observed": {
+    "gpu_model": "NVIDIA GeForce RTX 3070",
+    "driver": "580.159.03",
+    "gpu_evidence": "/proc/driver/nvidia/gpus/0000:01:00.0/information; /proc/driver/nvidia/version",
+    "cpu": "Intel Core i9-12900",
+    "logical_cpus": 24,
+    "ram_bytes": 33305800704,
+    "swap_bytes": 8589930496,
+    "os": "Ubuntu 24.04.4 LTS"
+  }
+}

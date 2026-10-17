@@ -1,0 +1,355 @@
+{
+  "snapshot_date_jst": "2026-10-18",
+  "prune_run": "20261013-133112_8236a79c",
+  "finetune_run": "20261013-140236_906ce367",
+  "status": "interim_snapshot_no_final_conclusion",
+  "completed_validation_records": 61,
+  "last": {
+    "train_lr": 0.0009084882588855666,
+    "train_loss": 5.2356344541962105,
+    "test_loss": 2.90593150927096,
+    "test_acc1": 38.564,
+    "test_acc5": 66.082,
+    "epoch": 60,
+    "n_parameters": 4389618
+  },
+  "best": {
+    "train_lr": 0.0009172960141513951,
+    "train_loss": 5.224584877586288,
+    "test_loss": 2.887526111943381,
+    "test_acc1": 38.92,
+    "test_acc5": 66.15,
+    "epoch": 57,
+    "n_parameters": 4389618
+  },
+  "nonfinite_epoch_metric_cells": 0,
+  "key_events": {
+    "final_consistency": {
+      "source_line": 23097,
+      "event": {
+        "run_id": "20261013-133112_8236a79c",
+        "rank": 0,
+        "seq": 23096,
+        "time_ns": 1791867271883003488,
+        "phase": "evolution",
+        "batch_id": 781,
+        "event": "final_consistency",
+        "status": "measured",
+        "kind": "vit",
+        "candidate_id": "b354fc8598adc1dd",
+        "rates": [
+          0.12024595970798142,
+          0.09521484375,
+          0.2437878349971932
+        ],
+        "implementation_legal": true,
+        "diagnostic_bounds_ok": true,
+        "candidate_requested_counts": {
+          "dim": 23,
+          "hidden": 877,
+          "head": 8
+        },
+        "mask_deleted_counts": {
+          "dim": 23,
+          "hidden": 877,
+          "head": 8
+        },
+        "counts_match": true,
+        "fitness_score": "NaN",
+        "fitness_recomputed_from_final_mask": "NaN",
+        "fitness_relative_diff": null,
+        "fitness_mask_consistent": false,
+        "candidate_mask_id": "ce8b8f6ac78ec95f",
+        "final_mask_id_from_deleted_counts": "ce8b8f6ac78ec95f",
+        "final_mask_hash": "470b9569fe14940d",
+        "note_mask_id": "candidate_mask_id と final_mask_id_from_deleted_counts は同じ規則（削除数）。final_mask_hash はマスク本体のハッシュ",
+        "deleted_heads_per_layer": [
+          0,
+          1,
+          2,
+          1,
+          2,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "deleted_hidden_per_layer": [
+          14,
+          37,
+          63,
+          26,
+          15,
+          4,
+          10,
+          147,
+          298,
+          197,
+          60,
+          6
+        ],
+        "constraint_value": 0.24399520075766967
+      }
+    },
+    "model_build": {
+      "source_line": 23099,
+      "event": {
+        "run_id": "20261013-133112_8236a79c",
+        "rank": 0,
+        "seq": 23098,
+        "time_ns": 1791867272425697709,
+        "phase": "build_pruned_model",
+        "batch_id": 781,
+        "event": "model_build",
+        "status": "measured",
+        "kind": "vit",
+        "model_build_success": true,
+        "model_build_error": null,
+        "original_parameters": 5717416,
+        "pruned_parameters": 4389618,
+        "actual_parameter_reduction": 0.23223743033566213,
+        "original_flops_get_complexity": 1254590976.0,
+        "pruned_flops_get_complexity": 959403598.0,
+        "actual_flops_reduction": 0.23528574941702754,
+        "target": 0.244,
+        "actual_model_dimensions": {
+          "patch_embed.proj.weight": [
+            169,
+            3,
+            16,
+            16
+          ],
+          "blocks.0.attn.qkv.weight": [
+            576,
+            169
+          ],
+          "blocks.0.mlp.fc1.weight": [
+            754,
+            169
+          ],
+          "blocks.1.attn.qkv.weight": [
+            384,
+            169
+          ],
+          "blocks.1.mlp.fc1.weight": [
+            731,
+            169
+          ],
+          "blocks.2.attn.qkv.weight": [
+            192,
+            169
+          ],
+          "blocks.2.mlp.fc1.weight": [
+            705,
+            169
+          ],
+          "blocks.3.attn.qkv.weight": [
+            384,
+            169
+          ],
+          "blocks.3.mlp.fc1.weight": [
+            742,
+            169
+          ],
+          "blocks.4.attn.qkv.weight": [
+            192,
+            169
+          ],
+          "blocks.4.mlp.fc1.weight": [
+            753,
+            169
+          ],
+          "blocks.5.attn.qkv.weight": [
+            384,
+            169
+          ],
+          "blocks.5.mlp.fc1.weight": [
+            764,
+            169
+          ],
+          "blocks.6.attn.qkv.weight": [
+            384,
+            169
+          ],
+          "blocks.6.mlp.fc1.weight": [
+            758,
+            169
+          ],
+          "blocks.7.attn.qkv.weight": [
+            576,
+            169
+          ],
+          "blocks.7.mlp.fc1.weight": [
+            621,
+            169
+          ],
+          "blocks.8.attn.qkv.weight": [
+            576,
+            169
+          ],
+          "blocks.8.mlp.fc1.weight": [
+            470,
+            169
+          ],
+          "blocks.9.attn.qkv.weight": [
+            576,
+            169
+          ],
+          "blocks.9.mlp.fc1.weight": [
+            571,
+            169
+          ],
+          "blocks.10.attn.qkv.weight": [
+            576,
+            169
+          ],
+          "blocks.10.mlp.fc1.weight": [
+            708,
+            169
+          ],
+          "blocks.11.attn.qkv.weight": [
+            576,
+            169
+          ],
+          "blocks.11.mlp.fc1.weight": [
+            762,
+            169
+          ]
+        }
+      }
+    },
+    "final_evaluation_after_pruning_before_finetune": {
+      "source_line": 23100,
+      "event": {
+        "run_id": "20261013-133112_8236a79c",
+        "rank": 0,
+        "seq": 23099,
+        "time_ns": 1791867592127339407,
+        "phase": "build_pruned_model",
+        "batch_id": 781,
+        "event": "final_evaluation_after_pruning_before_finetune",
+        "status": "measured",
+        "loss": 5.529459432679779,
+        "acc1": 8.134,
+        "acc5": 19.932
+      }
+    },
+    "timing": {
+      "source_line": 23101,
+      "event": {
+        "run_id": "20261013-133112_8236a79c",
+        "rank": 0,
+        "seq": 23100,
+        "time_ns": 1791867592127426546,
+        "phase": "build_pruned_model",
+        "batch_id": 781,
+        "event": "timing",
+        "status": "measured",
+        "wall_seconds_since_init": 1719.6930588220712,
+        "diag_seconds": 100.48711057542823,
+        "method_seconds_estimate": 1619.205948246643,
+        "note": "diag_seconds は記録処理の時間。GPU 同期による待ちは手法側に混ざり得るので、純粋な計算時間はログ無効の実行で別途測ること"
+      }
+    }
+  },
+  "scores_health": {
+    "dim": {
+      "elements": 192,
+      "nan": 192,
+      "inf": 0
+    },
+    "head": {
+      "elements": 36,
+      "nan": 0,
+      "inf": 0
+    },
+    "hidden": {
+      "elements": 9216,
+      "nan": 0,
+      "inf": 0
+    }
+  },
+  "candidate_rows": 10019,
+  "candidate_nonfinite_fitness_rows": 10019,
+  "scoring_batches": 782,
+  "scoring_samples": 100000,
+  "score_collection_correct_count": 74383,
+  "new_dim_nan_batches": [
+    87,
+    117,
+    167,
+    205,
+    211,
+    491,
+    500,
+    655,
+    705
+  ],
+  "final_norm_zero_batches": [
+    87,
+    117,
+    167,
+    205,
+    211,
+    491,
+    500,
+    655,
+    705
+  ],
+  "layernorm_nonfinite_element_counts": {
+    "inputs": 0,
+    "outputs": 0,
+    "incoming": 0,
+    "returned": 153024
+  },
+  "ea_operators": {
+    "crossover": {
+      "legal_before_revise": 2517,
+      "duplicate_parent_pool": 2506,
+      "novel_candidate_added": 11,
+      "novel_mask_added": 0,
+      "attempts": 10000
+    },
+    "mutation": {
+      "legal_before_revise": 4184,
+      "duplicate_parent_pool": 4176,
+      "novel_candidate_added": 8,
+      "novel_mask_added": 5,
+      "attempts": 10000,
+      "mutation_gene_count": {
+        "1": 4221,
+        "0": 4176,
+        "2": 1453,
+        "3": 150
+      }
+    }
+  },
+  "event_counts": {
+    "filter_runtime_config": 1,
+    "phase_start": 3,
+    "lrp_model_mode": 1,
+    "linear_lrp": 98,
+    "layernorm_health": 19550,
+    "layernorm_lrp": 832,
+    "residual_add": 48,
+    "filter_rescale": 50,
+    "gate": 48,
+    "conv2d_lrp": 2,
+    "score_health": 1564,
+    "invalid_score_batch": 695,
+    "score_aggregation_comparison": 1,
+    "protect_check": 1,
+    "score_version": 1,
+    "component_size_definition": 1,
+    "ea_config": 1,
+    "invalid_fitness": 100,
+    "ea_generation": 100,
+    "final_consistency": 1,
+    "model_build": 1,
+    "final_evaluation_after_pruning_before_finetune": 1,
+    "timing": 1
+  }
+}

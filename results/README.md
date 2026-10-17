@@ -38,3 +38,7 @@ NumPyが利用できる環境で、リポジトリのルートから実行しま
 ```bash
 python tools/archive_experiment_results.py --as-of-date 2026-10-11
 ```
+
+## 2026-10-18の中間報告
+
+[DeiT-Tiny：epoch 60終了時点の中間報告](reports/20261018_tiny_interim/README.md)には、学習曲線、実行設定・環境、NaN/EAの観測、元コード・論文との条件差と未検証事項を収録しています。途中結果の固定記録であり、300 epochの最終結果ではありません。
