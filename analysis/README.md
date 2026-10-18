@@ -4,6 +4,8 @@
 
 | 知りたいこと | 読む資料 |
 |---|---|
+| 実験のモデル・batch・epoch・変更点・ログの場所 | [実験台帳](experiment_ledger.md)（元コード側のBase実験も含む） |
+| 他チャットで相談した条件 | [チャット調査の補足](chat_experiment_notes.md) |
 | 何を疑って、何を記録したか | [目的別ログ一覧](logging_purpose_guide.md) |
 | 引数・出力ファイル・現在のイベント仕様 | [diag/README](../diag/README.md) |
 | 全ファイル・CSV列・イベント項目と#003〜#017の対応 | [詳細目録](diagnostic_log_inventory.md)（主対象は10/1。件数は当時の固定値） |

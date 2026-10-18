@@ -1,0 +1,49 @@
+{
+  "label": "Base experiment in original-code checkout; original run_id unavailable",
+  "model": "deit_base_patch16_224",
+  "batch_size": 32,
+  "requested_epochs": 10,
+  "completed_validation_records": 10,
+  "last": {
+    "train_lr": 0.00010453658778433484,
+    "train_loss": 4.6321182734043385,
+    "test_loss": 2.1212897307005414,
+    "test_acc1": 53.98697122124186,
+    "test_acc5": 78.85434705001795,
+    "epoch": 9,
+    "n_parameters": 42601421
+  },
+  "best": {
+    "train_lr": 1.000000000000484e-06,
+    "train_loss": 4.434350683513901,
+    "test_loss": 1.5266562568282411,
+    "test_acc1": 67.34284379083103,
+    "test_acc5": 87.83430911571878,
+    "epoch": 1,
+    "n_parameters": 42601421
+  },
+  "duration": "18:45:23",
+  "evidence": "Existing config.yaml, epoch log and model state definition. Dates inferred from mtimes, not exact process start/end timestamps.",
+  "validation_dataset_at_execution": "Not recorded; do not assume present-day 50000-image validation set",
+  "pruning_parameters": "Pruning command, original pruning metadata and NaN/EA logs were not found in this directory scan; do not infer them from finetuning config",
+  "sources": [
+    {
+      "path": "/home/nakata/code/XAI-Pruner/output/finetune/config.yaml",
+      "bytes": 1263,
+      "sha256": "ab3b87770e3ed5a1e1ef525f1a4e0c704484c0bc5be2837fa9e9ed3a0130e67a",
+      "mtime_jst": "2026-09-27T11:26:29.267461+09:00"
+    },
+    {
+      "path": "/home/nakata/code/XAI-Pruner/output/finetune/log.txt",
+      "bytes": 2048,
+      "sha256": "72a8682084c44d62a486c91fb4770e0c7bb78b5cd532f541ae39b1d2bad571ca",
+      "mtime_jst": "2026-09-28T06:11:53.233974+09:00"
+    },
+    {
+      "path": "/home/nakata/code/XAI-Pruner/output/state.yaml",
+      "bytes": 177,
+      "sha256": "07a7dd2e1d1b623cc344d77c50ce9df21c29f4bc0475a4fa2e18083b8b6dc70d",
+      "mtime_jst": "2026-09-27T11:11:23.648200+09:00"
+    }
+  ]
+}
