@@ -1,0 +1,80 @@
+[
+  {
+    "file": "lrp/rules.py",
+    "before": "epsilon * torch.where(input >= 0, torch.ones_like(input), -torch.ones_like(input))",
+    "after": "epsilon * torch.sign(input)",
+    "occurrences": 2
+  },
+  {
+    "file": "lrp/rules.py",
+    "before": "                empty = out_relevance.flatten(start_dim=1).abs().sum(dim=1, keepdim=True) == 0\n                cancelled = (selected_sum == 0) & ~empty\n                if cancelled.any():\n                    from diag.core import save_snapshot\n                    snapshot = save_snapshot(\"filter_signed_cancellation\", force=True,\n                                             out_relevance=out_relevance, selected=masked,\n                                             original_sum=original_sum, selected_sum=selected_sum)\n                    diag.emit(\"filter_signed_cancellation\", module_id=(ctx.diag_tag or {}).get(\"module\"),\n                              sample_count=int(cancelled.sum().item()), snapshot=snapshot)\n                    raise FloatingPointError(\"Filter selected signed sum cancels to zero with nonzero relevance\")\n                safe_selected = torch.where(selected_sum != 0, selected_sum, torch.ones_like(selected_sum))\n                scale = torch.where(empty, torch.zeros_like(original_sum), original_sum / safe_selected)\n                relevance = relevance * scale",
+    "after": "                relevance = relevance * (original_sum / selected_sum)",
+    "occurrences": 1
+  },
+  {
+    "file": "diag/relevance.py",
+    "before": "        safe_selected = torch.where(selected_sum != 0, selected_sum, torch.ones_like(selected_sum))\n        scale = torch.where(selected_sum != 0, original_sum / safe_selected, torch.zeros_like(original_sum))",
+    "after": "        scale = original_sum / selected_sum",
+    "occurrences": 1
+  },
+  {
+    "file": "pruner/pruner.py",
+    "before": "random.sample(tuple(sorted(self.candidates)),",
+    "after": "random.sample(self.candidates,",
+    "occurrences": 4
+  },
+  {
+    "file": "pruner/pruner.py",
+    "before": "candidates = sorted(self.candidates)",
+    "after": "candidates = list(self.candidates)",
+    "occurrences": 2
+  },
+  {
+    "file": "pruner/pruner.py",
+    "before": "diag.numerics.require_finite_scores",
+    "after": "diag.numerics.record_score_health",
+    "occurrences": 2
+  },
+  {
+    "file": "pruner/pruner.py",
+    "before": "            raise FloatingPointError(\"EA fitness contains NaN/Inf; selection aborted\")",
+    "after": "            # Observation only: retain original selection even for NaN/Inf.",
+    "occurrences": 2
+  },
+  {
+    "file": "prune-ViT.py",
+    "before": "import random\n",
+    "after": "",
+    "occurrences": 1
+  },
+  {
+    "file": "prune-ViT.py",
+    "before": "    random.seed(seed)\n    args.python_random_seeded = True\n",
+    "after": "",
+    "occurrences": 1
+  },
+  {
+    "file": "prune-ViT.py",
+    "before": "    parser.add_argument(\"--diag_smoke_samples\", type=int, default=0, help=\"CPU動作確認用: 両データ集合を先頭N画像に限定。0は全件\")\n",
+    "after": "",
+    "occurrences": 1
+  },
+  {
+    "file": "prune-ViT.py",
+    "before": "    if args.diag_smoke_samples < 0:\n        raise ValueError(\"diag_smoke_samples must be nonnegative\")\n    if args.diag_smoke_samples:\n        dataset_prune = torch.utils.data.Subset(dataset_prune, range(min(args.diag_smoke_samples, len(dataset_prune))))\n        dataset_val = torch.utils.data.Subset(dataset_val, range(min(args.diag_smoke_samples, len(dataset_val))))\n        print(\"SMOKE RUN: limited samples; accuracy is not a research result\")\n\n",
+    "after": "",
+    "occurrences": 1
+  },
+  {
+    "file": "engine/engine.py",
+    "before": "        try:\n            scores = update_scores(model_without_ddp, scores, momentum)\n        except FloatingPointError:\n            from diag.core import save_snapshot\n            path = save_snapshot(\"invalid_score_batch\", force=True, samples=samples, targets=targets, outputs=outputs, initial_relevance=relevance)\n            diag.emit(\"invalid_score_batch\", snapshot=path)\n            raise\n",
+    "after": "        scores = update_scores(model_without_ddp, scores, momentum)\n        diag.numerics.capture_score_batch(scores, samples, targets, outputs, relevance)\n",
+    "occurrences": 1
+  },
+  {
+    "file": "diag/core.py",
+    "before": "\"python_random_seeded_by_script\": getattr(args, \"python_random_seeded\", False),",
+    "after": "\"python_random_seeded_by_script\": False,",
+    "occurrences": 1
+  }
+]

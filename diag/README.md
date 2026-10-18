@@ -1,10 +1,10 @@
 # 診断ログ（diag）
 
-`ログ出したいもの.txt` の「層A：通常の観測ログ」と「第0段階：整合性ログ」を実装したもの。
+[資料の入口](../analysis/README.md) / [目的別の追加ログ一覧](../analysis/logging_purpose_guide.md) / [全ファイル・列の目録](../analysis/diagnostic_log_inventory.md)。
 **手法の挙動は変えない**（乱数を引かない・tensor を in-place 変更しない・scores / candidates / masks を書き換えない）。
 `--diag_dir` を付けたときだけ有効になり、付けなければ従来どおり動く。
 
-確認済み: 小さい ViT（DeiT 構造）と ResNet-18 で、元コード / 変更後コード（ログなし）/ 変更後コード（ログあり）の
+初期追加時の検証記録: 小さい ViT（DeiT 構造）と ResNet-18 で、元コード / 変更後コード（ログなし）/ 変更後コード（ログあり）の
 スコア・枝刈り後の重み・`state.yaml`・実行後の NumPy / Python 乱数状態が完全に一致した。
 
 ## 使い方
@@ -77,3 +77,26 @@ python tools/summarize_diag.py ./diag_logs/<run_id>/rank0     # summary.md を�
 - `prune-CNN.py` は `prune_one_shot()` に `num_classes` を渡しておらず、そのままでは TypeError になる
 - `random.sample(self.candidates, k)` は set を渡しているため Python 3.11 以降で TypeError（`metadata.json` に記録）
 - CNN の `--filter_percent` は使われておらず Conv の Filter は 0.5 固定（`filter_runtime_config` で確認できる）
+
+## 後から追加した観測ログ（現在の作業コピー）
+
+この文書の更新は仕様の説明であり、未コミットの観測コードを一緒にコミットしたものではない。コードの公開状態と文書の説明対象を区別する。初期の小型モデル検証と、現在の全ImageNet/GPU実行の一致証明も別である。
+
+| イベント | 目的・記録内容 | 疑問・用途 |
+|---|---|---|
+| `layernorm_health` | 全バッチ・全LayerNormの入力/出力/受信/返却関連度の非有限数とraw出力ゼロ数 | #012、NaNの発生箇所 |
+| `layernorm_lrp` | 詳細対象バッチまたは異常・ゼロ出力時のテンソル統計 | #009/#012の補助 |
+| `score_health` | 新規/累積構造スコアの非有限groupと件数 | #004/#012 |
+| `invalid_score_batch` | 異常スコアが出た画像・targets・outputs・初期関連度のsnapshot参照 | 原因追跡 |
+| `invalid_fitness` | 非有限Fitness数・候補数。記録後も元の選択を続行 | EA評価の成立確認 |
+| `execution_failed` | Python例外の種別・メッセージ | 失敗を隠さず記録。SIGKILLは捕捉できない |
+
+異常snapshotは詳細バッチ数を超えて保存できるが、共有保存予算に制限される。全イベントが全テンソルを保存するわけではない。集計は有限値によるFitness再計算比較の件数も記録し、0件なら差をnullとする。監視処理の時間・GPU同期・メモリ負荷があり、時間の同一性は保証しない。
+
+## 過去の数値修正版と現在の区別
+
+2026-10-04にはゼロ分母epsilon、Filterのゼロ処理、非有限値での停止、Python乱数固定・候補ソートを変更した実験を行った。その後これらの計算変更は編集記録に基づき撤回した。`filter_signed_cancellation`による停止や`--diag_smoke_samples`は過去の修正版の機能で、現在の観測専用仕様として使用しない。
+
+[復元の経緯・限界](../analysis/restoration_20261004/findings_and_restoration.md)と[修正版の結果](../analysis/rerun_results_20261004.md)を参照。現在の作業コピーには観測のみの追加を残しているが、公開コードとの全モデル・全データの一致比較は未完了。NaN/Infを消したり候補を除外したりはしない。
+
+なお10/13に`--data_set EVO_IMNET`を選択肢へ追加した。数式変更ではないが、指定すると既定のvalからsubImageNetへ関連度計算データが変わるため、「ログ以外が同条件」の比較では双方で入力条件を揃える必要がある。
